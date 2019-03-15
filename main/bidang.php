@@ -6,7 +6,8 @@
   ini_set('display_startup_errors', TRUE); 
 
   include("../conn/conn.php");
-  include('../control/functions.php');
+  include("../control/functions.php");
+  include("../control/bid_functions.php");
   $title_pg='Bidang';
 
   if($_SESSION['status'] !="login")
@@ -88,86 +89,7 @@
   <?php require_once("../main/header.php");?>
 
   <!-- Left side column. contains the logo and sidebar -->
-  <aside class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-      
-      <!-- /.search form -->
-      <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu">
-        <li class="header">Menu Utama</li>
-        <li class="active">
-          <a href="../index.php">
-            <i class="fa fa-home"></i> <span>Dashboard</span>
-            <span class="pull-right-container">
-              <small class="label pull-right"></small>
-            </span>
-          </a>
-        </li>
-        <?php if($role == '1') { ?>
-          <li class="treeview">
-            <a href="#">
-              <i class="fa fa-gears"></i>
-              <span>Master</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="../main/divisi.php"><i class="fa fa-list"></i> Divisi </a></li>
-              <li><a href="../main/bidang.php"><i class="fa fa-list"></i> Bidang</a></li>
-              <li><a href="../main/jabatan.php"><i class="fa fa-list"></i> Jabatan</a></li>
-              <li><a href="#"><i class="fa fa-list"></i> No. Akun</a></li>
-              <li><a href="../main/user.php"><i class="fa fa-group"></i> User</a></li>
-              <li><a href="../main/tahun.php"><i class="fa fa-calendar"></i> Tahun</a></li>
-            </ul>
-          </li>
-        <?php } ?>
-         <li>
-          <a href="../main/transaksi.php">
-            <i class="fa fa-sign-out"></i> <span>Transaksi</span>
-            <span class="pull-right-container">
-              <small class="label pull-right"></small>
-            </span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class="fa fa-newspaper-o"></i> <span>Laporan</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-           <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-list"></i> Rekap Kegiatan </a></li>
-            <li><a href="#"><i class="fa fa-list"></i> Rekap Keuangan</a></li>
-          </ul>
-        </li>
-        
-        <li>
-          <a href="#">
-            <i class="fa fa-envelope"></i> <span>Inbox</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-green"></small>
-            </span>
-          </a>
-        </li>
-
-         <li>
-          <a href="../main/logout.php">
-            <i class="fa fa-sign-out"></i> <span>Sign Out</span>
-            <span class="pull-right-container">
-              <small class="label pull-right"></small>
-            </span>
-          </a>
-        </li>
-        
-       
-      </ul>
-    </section>
-    <!-- /.sidebar -->
-  </aside>
-
+  <? echo sidebar();?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper" id="konten">
   <section class="content-header" style="width: 100%;">
