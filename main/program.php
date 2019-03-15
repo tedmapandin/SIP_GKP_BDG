@@ -234,7 +234,7 @@
               <tr>
                 <td>
                     <div class="box-header">
-                    <a class="btn btn-success btn-flat" data-toggle="modal" data-target="#addLaporan"><span class="fa fa-plus-square-o"></span> Program Baru</a>
+                    <a class="btn btn-success btn-flat" data-toggle="modal" data-target="#addProgram"><span class="fa fa-plus-square-o"></span> Program Baru</a>
                     </div>
                 </td>
               </tr>
@@ -381,7 +381,7 @@
   <?php require_once('../main/footer.php');?>
 
 <!-- Modal Input -->
-<div class="modal fade" id="addLaporan" tabindex="-1" role="dialog">
+<div class="modal fade" id="addProgram" tabindex="-1" role="dialog">
   <? echo modalInputProg(); ?>
 </div>
 

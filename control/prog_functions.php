@@ -68,14 +68,14 @@ function modalInputProg()
                           </div>
                       <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
-                          <a class="nav-link active" href="#vtranskeg" role="tab" data-toggle="tab">Kegiatan</a>
+                          <a class="nav-link active" href="#vProg" role="tab" data-toggle="tab">Kegiatan</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="#vtranskeu" role="tab" data-toggle="tab">Uraian</a>
+                          <a class="nav-link" href="#vProgDet" role="tab" data-toggle="tab">Uraian</a>
                         </li>
                       </ul>
                       <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane fade show active" id="vtranskeg"><br/>
+                        <div role="tabpanel" class="tab-pane fade show active" id="vProg"><br/>
                             <div class="form-group">
                               <div class="col-sm-12">
                                 <table cellpadding="3" cellspacing="4" >
@@ -100,7 +100,7 @@ function modalInputProg()
                               </div>  
                             </div>
                           </div>
-                          <div role="tabpanel" class="tab-pane show fade" id="vtranskeu">
+                          <div role="tabpanel" class="tab-pane show fade" id="vProgDet">
                             <div class="form-group">
                                 <label for="inputUserName" class="col-sm-4 control-label">Uraian</label>
                                 <div class="col-sm-12">
