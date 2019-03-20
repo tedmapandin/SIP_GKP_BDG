@@ -10,6 +10,8 @@
   include("../control/prog_functions.php");
   $title_pg='Program';
 
+// Program to display complete URL          
+// Display the link 
 
   if($_SESSION['status'] !="login")
   {
@@ -22,13 +24,12 @@
   $login    = mysqli_query($conn,$get_user);
   $row = mysqli_fetch_array($login,MYSQLI_ASSOC);
   
-    $role = $row['role_id'];
-    $ktgdiv =$row['ktgdiv_id'];
-    $bidang = $row['bid_id'];
-    $divi = $row['div_id'];
-    $id_usr = $row['usr_id'];
+  $role = $row['role_id'];
+  $ktgdiv =$row['ktgdiv_id'];
+  $bidang = $row['bid_id'];
+  $divi = $row['div_id'];
+  $id_usr = $row['usr_id'];
   
-
   $filt="";
   if($role != '1') 
   {
@@ -36,31 +37,33 @@
     {
       if($bidang != '1')
       {
-        $filt = "WHERE a.div_id = '$divi' AND a.bid_id = '$bidang'";
+        $filt = "WHERE a.div_id = '$divi' AND a.bid_id = '$bidang' and a.trans_stat = '1'";
       }
       else
       {
-        $filt = "WHERE a.div_id = '$divi'";
+        $filt = "WHERE a.div_id = '$divi' and a.trans_stat = '1'";
       }
     }
   }
-
-  function clean($data) 
+  else
   {
-      return $data;
+    $filt = "WHERE a.trans_stat = '1'";
   }
 
-   $bidLap=$blnLap=$thnLap=$nama_keg=$tgl_keg=$tmp_keg=$urai_keg=$ket_keg=$tgl_keu=$ket_keu=$nom_keu="";
+ $bidLap=$blnLap=$thnLap=$nama_keg=$jenis_keg=$tgl_keg=$tmp_keg=$urai_keg=$ket_keg=$tgl_keu=$ket_keu=$nom_keu="";
   $errorLap=array();
-
-  $id_trans="";
-  if(!empty($_POST))
-  {
-    $id_trans = $_POST['transid'];
-  }
 
   if ($_SERVER["REQUEST_METHOD"] == "POST") 
   {
+      if(!empty($_POST['progid']))
+      {
+        $id_trans = $_POST['progid'];
+      }
+      if(!empty($_POST['keg_id']))
+      {
+        $id_keg = $_POST['keg_id'];
+      }
+
       if(empty($_POST['lapBid'])){
           $errorLap[] = "Tentukan Bidang";
       }else {
@@ -72,19 +75,19 @@
           $blnLap = clean($_POST['lapMonth']);
       }
       if(empty($_POST['lapYear'])){
-          $errorLap[] = "Tentukan Bidang";
+          $errorLap[] = "Tentukan Tahun";
       }else {
           $thnLap = clean($_POST['lapYear']);
       }
       if(empty($_POST['keg_name'])){
-          $errorLap[] = "Masukan jenis kegiatan";
+          $errorLap[] = "Masukan nama kegiatan";
       }else {
           $nama_keg = clean($_POST['keg_name']);
       }
-      if(empty($_POST['tgl_keg'])){
-          $errorLap[] = "Masukan Tanggal kegiatan";
+       if(empty($_POST['jenis_keg'])){
+          $errorLap[] = "Masukan jenis kegiatan";
       }else {
-          $tgl_keg = clean($_POST['tgl_keg']);
+          $jenis_keg = clean($_POST['jenis_keg']);
       }
       if(empty($_POST['tem_keg'])){
           $errorLap[] = "Masukan Tempat kegiatan";
@@ -101,26 +104,15 @@
       }else {
           $ket_keg = clean($_POST['ket_keg']);
       }
-
-      if(empty($_POST['tgl_keu'])){
-          $errorLap[] = "Masukan tanggal pengeluaran";
-      }else {
-          $tgl_keu = clean($_POST['tgl_keu']);
-      }
-      if(empty($_POST['ket_keu'])){
-          $errorLap[] = "Masukan keterangan pengeluaran";
-      }else {
-          $ket_keu = clean($_POST['ket_keu']);
-      }
       if(empty($_POST['nom_keu'])){
-          $errorLap[] = "Masukan nominal pengeluaran";
+          $errorLap[] = "Masukan nominal anggaran";
       }else {
           $nom_keu = clean($_POST['nom_keu']);
       }
 
-      if(isset($_POST['saveLap']) && count($errorLap) < 1)
+      if(isset($_POST['saveProg']) && count($errorLap) < 1)
       {
-          $sql = "INSERT INTO tbl_transaksi (div_id,bid_id,usr_id)VALUES ('$divi','$bidLap','$id_usr')";
+          $sql = "INSERT INTO tbl_transaksi (div_id,bid_id,usr_id,trans_stat)VALUES ('$divi','$bidLap','$id_usr',1)";
           //echo $sql;
           $exec = mysqli_query($conn,$sql);
 
@@ -129,9 +121,9 @@
               echo "Error: " . $sql . "<br>" . $conn->error;
           }
 
-          $transid=mysqli_insert_id($conn);
+          $progid=mysqli_insert_id($conn);
 
-          $sqlkeg ="INSERT INTO tbl_detkeg(trans_id,bln_id,thn_desc,detkeg_nama,detkeg_urai,detkeg_ket,detkeg_tgl,detkeg_tempat)VALUES('$transid','$blnLap','$thnLap','$nama_keg','$urai_keg','$ket_keg','$tgl_keg','$tmp_keg')";
+          $sqlkeg ="INSERT INTO tbl_detkeg(trans_id,bln_id,thn_desc,detkeg_nama,detkeg_jenis,detkeg_urai,detkeg_ket,detkeg_tgl,detkeg_tempat)VALUES('$progid','$blnLap','$thnLap','$nama_keg','$jenis_keg','$urai_keg','$ket_keg','$tgl_keg','$tmp_keg')";
           //echo $sqlkeg;
           $execkeg = mysqli_query($conn,$sqlkeg);
 
@@ -141,28 +133,71 @@
           }
 
           $det_kegid = mysqli_insert_id($conn);
-          $count_tgl = count($tgl_keu)-1;
-          $x="";
-          for($x=0;$x<$count_tgl;$x++)
+
+          $sqlkeu ="INSERT INTO tbl_detkeu(detkeg_id,detkeu_nom)VALUES('$det_kegid','$nom_keu')";
+          //echo $sqlkeu;
+          $execkeu = mysqli_query($conn,$sqlkeu);
+          if ($execkeu !== TRUE) 
           {
-            $sqlkeu ="INSERT INTO tbl_detkeu(detkeg_id,detkeu_tgl_trans,detkeu_desc,detkeu_nom)VALUES('$det_kegid','$tgl_keu[$x]','$ket_keu[$x]','$nom_keu[$x]')";
-            //echo $sqlkeu;
-            $execkeu = mysqli_query($conn,$sqlkeu);
-            if ($execkeu !== TRUE) 
-            {
-                echo "Error: " . $sqlkeu . "<br>" . $conn->error;
-            }
+              echo "Error: " . $sqlkeu . "<br>" . $conn->error;
           }
+          //header("location:http://localhost/SIP_GKP_BDG/main/program.php");
+      }
+
+      if(isset($_POST['editProg']) && count($errorLap) < 1)
+      {
+          $sql = "UPDATE 
+                    tbl_transaksi 
+                  SET 
+                    bid_id='$bidLap',usr_id='$id_usr' 
+                  WHERE trans_id='$id_trans'";
+          //echo $sql.'<br/>';
+          $exec = mysqli_query($conn,$sql);
+
+          if ($exec !== TRUE) 
+          {
+              echo "Error: " . $sql . "<br>" . $conn->error;
+          }
+
+          $sqlkeg ="UPDATE 
+                      tbl_detkeg 
+                    SET 
+                      bln_id='$blnLap', 
+                      thn_desc='$thnLap', 
+                      detkeg_nama='$nama_keg', 
+                      detkeg_jenis='$jenis_keg', 
+                      detkeg_urai='$urai_keg', 
+                      detkeg_tempat='$tmp_keg',
+                      detkeg_ket='$ket_keg'
+                    WHERE 
+                      trans_id='$id_trans'";
+          //echo $sqlkeg.'<br/>';
+          $execkeg = mysqli_query($conn,$sqlkeg);
+
+          if ($execkeg !== TRUE) 
+          {
+              echo "Error: " . $sqlkeg . "<br>" . $conn->error;
+          }
+
+          $sqlkeu ="UPDATE
+                      tbl_detkeu
+                    SET
+                      detkeu_nom = '$nom_keu'
+                    WHERE
+                      detkeg_id = '$id_keg'";
+          //echo $sqlkeu;
+          $execkeu = mysqli_query($conn,$sqlkeu);
+          if ($execkeu !== TRUE) 
+          {
+              echo "Error: " . $sqlkeu . "<br>" . $conn->error;
+          }
+          //header("location:http://localhost/SIP_GKP_BDG/main/program.php");
       }
   }
 
-  if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delTrans']))
+  if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delProg']))
   {
-      $deleteTrans = "DELETE a.*, b.*, c.* 
-                     FROM tbl_transaksi a
-                     INNER JOIN tbl_detkeg b  ON a.trans_id = b.trans_id
-                     INNER JOIN tbl_detkeu c  ON b.detkeg_id = c.detkeg_id
-                     WHERE a.trans_id = '$id_trans'";
+      $deleteTrans = "UPDATE tbl_transaksi SET trans_stat=9 WHERE trans_id = '$id_trans'";
       $execDelTrans = mysqli_query($conn,$deleteTrans);
 
       if ($execDelTrans !== TRUE) 
@@ -177,31 +212,19 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>GKP | <?php echo $title_pg;?></title>
-  <!-- Tell the browser to be responsive to screen width -->
   <link rel="shorcut icon" type="text/css" href="../assets/images/favicon.png">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="../assets/font-awesome/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <!-- jvectormap -->
   <link rel="stylesheet" href="../assets/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
-  <!-- Theme style -->
   <link rel="stylesheet" href="../assets/dist/css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="../assets/dist/css/skins/_all-skins.min.css">
   <link rel="stylesheet" href="../assets/switch_btn.css">
   <link rel="stylesheet" href="../assets/plugins/datatables/jquery.datatables.min.css">
   <script src="../assets/jquery-3.3.1.min.js"></script>
-  <!-- Bootstrap 3.3.6 -->
   <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
-  <!-- AdminLTE App -->
   <script src="../assets/dist/js/app.min.js"></script>
-  <!-- AdminLTE for demo purposes -->
   <script src="../assets/dist/js/demo.js"></script>
-  <!-- FastClick -->
   <script src="../assets/dist/js/demo.js"></script>
   <script type="text/javascript" src="../assets/plugins/toast/jquery.toast.min.js"></script>
   <script src="../assets/jquery.form.js"></script>
@@ -262,7 +285,7 @@
                 {
                 ?>
                     <div class="alert alert-success" role="alert">
-                      Transaksi Sukses !
+                      Sukses.
                     </div>
                 <?  
                 }
@@ -313,8 +336,8 @@
                             {
                                 
                                 $i++;
-                                $transId    = $row['trans_id'];
-                                //echo $transId;
+                                $progId    = $row['trans_id'];
+                                //echo $progId;
                                 //query nama bulan
                                 $bulan      = $row['bln_id'];
                                 $get_bln    = "SELECT * FROM tbl_bulan WHERE bln_id = '$bulan'";
@@ -343,16 +366,17 @@
                                     <td align="right"><?php echo $row['usr_nama']?></td>
                                     <td align="center"><?php echo date_format($tgl_keg,"Y/m/d");?></td>
                                     <td style="text-align:right;">
-                                        <input type="hidden" name="transid" id="transid" value="<? echo $transId;?>">
-                                        <a class="btn" data-toggle="modal" data-target="#viewLaporan"><span class="fa fa-eye"></span></a>
-                                        <a class="btn" data-toggle="modal" data-target="#userEdit<? echo $transId;?>"><span class="fa fa-pencil"></span></a>
-                                        <a class="btn" data-toggle="modal" data-target="#transDel"><span class="fa fa-trash"></span></a>
-                                        <a class="btn" href="#"><span class="fa fa-refresh"></span></a>
+                                        <input type="hidden" name="progid" id="progid" value="<? echo $progId;?>">
+                                        <a class="btn" data-toggle="modal" data-target="#viewProgram<? echo $progId;?>"><span class="fa fa-eye"></span></a>
+                                        <a class="btn" data-toggle="modal" data-target="#editProgram<? echo $progId;?>"><span class="fa fa-pencil"></span></a>
+                                        <a class="btn" data-toggle="modal" data-target="#delProgram<? echo $progId;?>"><span class="fa fa-trash"></span></a>
+                                        <a class="btn" href="<? refresh();?>"><span class="fa fa-refresh"></span></a>
                                     </td>
                                 </tr>                                
                               <?  
-                                echo modalViewProg();
-                                echo modalDelProg();
+                                echo modalViewProg($progId);
+                                echo modalEditProg($progId);
+                                echo modalDelProg($progId);
                             }
                         }
                         else
@@ -384,6 +408,7 @@
 <div class="modal fade" id="addProgram" tabindex="-1" role="dialog">
   <? echo modalInputProg(); ?>
 </div>
+
 
 <!-- ./wrapper -->
 <script type="text/javascript">

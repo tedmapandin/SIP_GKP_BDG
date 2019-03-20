@@ -85,6 +85,20 @@ function DisplayDate($val){
     return $datefull;
 }
 
+function refresh()
+{
+  if(isset($_SERVER['HTTPS']) &&  
+            $_SERVER['HTTPS'] === 'on') 
+    $link = "https"; 
+    else
+        $link = "http"; 
+    $link .= "://"; 
+    $link .= $_SERVER['HTTP_HOST']; 
+    $link .= $_SERVER['PHP_SELF']; 
+
+    return($link);
+}
+
 function msg($text)
 {   
     $text   =    '<div class="alert alert-success"><strong>Sukses! </strong>'.$text.'</div>';
@@ -269,7 +283,7 @@ function sidebarIdx()
           </li>
         <?php } ?>
          <li>
-          <a href="../SIP_GKP_BDG/transaksi.php">
+          <a href="../SIP_GKP_BDG/main/transaksi.php">
             <i class="fa fa-sign-out"></i> <span>Transaksi</span>
             <span class="pull-right-container">
               <small class="label pull-right"></small>
@@ -299,7 +313,7 @@ function sidebarIdx()
         </li>
 
          <li>
-          <a href="../SIP_GKP_BDG/logout.php">
+          <a href="../SIP_GKP_BDG/main/logout.php">
             <i class="fa fa-sign-out"></i> <span>Sign Out</span>
             <span class="pull-right-container">
               <small class="label pull-right"></small>
