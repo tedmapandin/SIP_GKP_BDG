@@ -7,8 +7,8 @@
 
   include("../conn/conn.php");
   include("../control/functions.php");
-  include("../control/trans_functions.php");
-  $title_pg='Transaksi';
+  include("../control/keg_functions.php");
+  $title_pg='Kegiatan';
 
 
   if($_SESSION['status'] !="login")
@@ -39,8 +39,12 @@
     $id_trans = $_POST['transid'];
   }*/
 
+  $qry="";
   if(!empty($_POST)) {
     $filterBid = $_POST['filterBid'];
+    if($filterBid != "all"){
+      $qry = "WHERE a.bid_id = '$filterBid'";
+    }
   }
 
   if($bidang != '1')
@@ -96,13 +100,13 @@
   <div class="content-wrapper" id="konten">
     <section class="content-header" style="width: 100%;">
       <h1>
-        LAPORAN
+        Kegiatan
         <small></small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Menu</a></li>
         <li><a href="#">Laporan</a></li>
-        <li class="active">Buat Baru</li>
+        <li class="active">Kegiatan</li>
       </ol>
     </section>
     <section class="content" style="width: 100%;">
@@ -115,6 +119,7 @@
                       <td>
                           Bidang : <select class="form-control-sm" id="filterBid" name="filterBid">
                               <option value="">- Bidang  -</option>
+                              <option value="all">- SEMUA  -</option>
                               <?php
                               $get_bid = "SELECT * FROM tbl_bidang $fBid ORDER BY bid_id";
                               $query = mysqli_query($conn,$get_bid);
@@ -137,19 +142,22 @@
             { 
               ?>
                 <div class="box-body">
-                  <div align="center"><h2><strong>DAFTAR LAPORAN</strong></h2></div><br/>
-                  <table id="laptab" class="table table-sm table-striped" style="font-size:12px;">
+                  <div align="right">Rekap :&nbsp;&nbsp;<button class="btn" id="btnExport" onclick="javascript:fnExcelReport('rekapKegiatan','rekap_kegiatan');"><i class="fa fa-file-excel-o" aria-hidden="true" style='font-size:24px'></i></button></div>
+                  <div id="rekapKegiatan">
+                  <div align="center"><h2><strong>REKAP LAPORAN KEGIATAN</strong></h2></div>
+                  <br/>
+                  <table id="laptab" class="table table-sm table-bordered" style="font-size:12px;">
                     <thead>    
                     <tr align="center">
                         <th width="10">&nbsp;</th>
                         <th width="10">No.</th>
-                        <th>Divisi</th>
                         <th>Bidang</th>
                         <th>Kegiatan</th>
                         <th>Jenis</th>
                         <th>Tempat</th>
-                        <th>Anggaran</th>
-                        <th>Pembuat</th>
+                        <th>Uraian</th>
+                        <th>Keterangan</th>
+                        <th>Pengeluaran</th>
                         <th style="text-align:center;">Aksi</th>
                     </tr>
                     </thead>
@@ -167,6 +175,8 @@
                                             e.detkeg_tempat,
                                             e.bln_id,
                                             e.thn_desc,
+                                            e.detkeg_urai,
+                                            e.detkeg_ket,
                                             f.detkeu_nom
                                         FROM 
                                             tbl_transaksi a 
@@ -175,7 +185,7 @@
                                           LEFT JOIN tbl_user d ON a.usr_id = d.usr_id
                                           LEFT JOIN tbl_detkeg e ON a.trans_id = e.trans_id
                                           LEFT JOIN tbl_detkeu f ON e.detkeg_id = f.detkeg_id
-                                          WHERE a.bid_id = '$filterBid'
+                                          $qry
                                         ORDER BY e.bln_id DESC, a.trans_tgl ASC";
                                         //echo $get_trans;
                             $exec_trans = mysqli_query($conn,$get_trans);
@@ -206,23 +216,23 @@
                                     <tr style="vertical-align: middle;">
                                         <td><input type="checkbox"></td>
                                         <td><?php echo $i;?>.</td>
-                                        <td><?php echo $row['div_nama'];?></td>
                                         <td><?php echo $row['bid_nama'];?></td>
                                         <td><?php echo $row['detkeg_nama'];?></td>
                                         <td><?php echo $row['detkeg_jenis'];?></td>
                                         <td><?php echo $row['detkeg_tempat'];?></td>
+                                        <td><?php echo $row['detkeg_urai'];?></td>
+                                        <td><?php echo $row['detkeg_ket'];?></td>
                                         <td align="right"><?php echo split2curr($row['detkeu_nom']);?></td>
-                                        <td align="right"><?php echo $row['usr_nama']?></td>
                                         <td style="text-align:right;">
                                             <!-- <input type="hidden" name="transid" id="transid" value=""> -->
-                                            <a class="btn" data-toggle="modal" data-target="#viewLaporan<? echo $transId;?>" ><span class="fa fa-eye"></span></a>
-                                            <a class="btn" data-toggle="modal" data-target="#editLaporan<? echo $transId;?>"><span class="badge badge-info">Lapor</span></a>
-                                             <a class="btn" data-toggle="modal" data-target="#transDel<? echo $transId;?>"><span class="fa fa-trash"></span></a>
+                                            <a class="btn" data-toggle="modal" data-target="#viewKegiatan<? echo $transId;?>" ><span class="fa fa-eye"></span></a>
+                                             <a class="btn" data-toggle="modal" data-target="#delKegiatan<? echo $transId;?>"><span class="fa fa-trash"></span></a>
                                             <a class="btn" href="#"><span class="fa fa-refresh"></span></a>
                                         </td>
                                     </tr>
                                     <?
-                                    echo modalViewTrans($transId); 
+                                    echo modalViewKeg($transId);
+                                    echo modalDelKeg($transId);  
                                 }
                             }
                             else
@@ -236,6 +246,7 @@
                       ?> 
                     </tbody>
                   </table>
+                </div>
                 </div>
             <? 
             } 
@@ -260,7 +271,43 @@
     $("body").on("click",".remove",function(){ 
         $(this).parents(".fieldGrp").remove();
     });
-});
+  });
+  function fnExcelReport(id, name) {
+                var tab_text = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
+                tab_text = tab_text + '<head><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>';
+                tab_text = tab_text + '<x:Name>Test Sheet</x:Name>';
+                tab_text = tab_text + '<x:WorksheetOptions><x:Panes></x:Panes></x:WorksheetOptions></x:ExcelWorksheet>';
+                tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
+                tab_text = tab_text + "<table border='1px'>";
+                var exportTable = $('#' + id).clone();
+                exportTable.find('input').each(function (index, elem) { $(elem).remove(); });
+                tab_text = tab_text + exportTable.html();
+                tab_text = tab_text + '</table></body></html>';
+                var data_type = 'data:application/vnd.ms-excel';
+                var ua = window.navigator.userAgent;
+                var msie = ua.indexOf("MSIE ");
+
+                var fileName = name + '_' + parseInt(Math.random() * 10000000000) + '.xls';
+                if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+                    if (window.navigator.msSaveBlob) {
+                        var blob = new Blob([tab_text], {
+                            type: "application/csv;charset=utf-8;"
+                        });
+                        navigator.msSaveBlob(blob, fileName);
+                    }
+                } else {
+                    var blob2 =  new Blob([tab_text], {
+                        type: "application/csv;charset=utf-8;"
+                    });
+                    var filename = fileName;
+                        var elem = window.document.createElement('a');
+                        elem.href = window.URL.createObjectURL(blob2);
+                        elem.download = filename;
+                        document.body.appendChild(elem);
+                        elem.click();
+                        document.body.removeChild(elem);
+                }
+            }
 </script>
 </form>
 </body>

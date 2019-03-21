@@ -1,4 +1,5 @@
 <?
+
 function split2curr($nilai) 
 {  
     $split=explode('.',$nilai);
@@ -189,7 +190,7 @@ function sidebar()
             </span>
           </a>
            <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-list"></i> Rekap Kegiatan </a></li>
+            <li><a href="../main/kegiatan.php"><i class="fa fa-list"></i> Rekap Kegiatan </a></li>
             <li><a href="#"><i class="fa fa-list"></i> Rekap Keuangan</a></li>
           </ul>
         </li>
@@ -298,7 +299,7 @@ function sidebarIdx()
             </span>
           </a>
            <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-list"></i> Rekap Kegiatan </a></li>
+            <li><a href="../SIP_GKP_BDG/main/kegiatan.php"><i class="fa fa-list"></i> Rekap Kegiatan </a></li>
             <li><a href="#"><i class="fa fa-list"></i> Rekap Keuangan</a></li>
           </ul>
         </li>

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 21, 2019 at 11:34 AM
+-- Generation Time: Mar 21, 2019 at 05:23 PM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.23
 
@@ -97,7 +97,8 @@ CREATE TABLE `tbl_detkeg` (
 --
 
 INSERT INTO `tbl_detkeg` (`trans_id`, `detkeg_id`, `bln_id`, `thn_desc`, `detkeg_nama`, `detkeg_jenis`, `detkeg_urai`, `detkeg_ket`, `detkeg_tgl`, `detkeg_tempat`, `detkeg_stat`) VALUES
-(30, 32, 4, 2019, 'Bonti Youth Service', 'Kebaktian', 'Dilaksanakan hari minggu pada Minggu ke-3/bulan.\r\nDimulai pukul 10.00', 'Kebaktian Pemuda', '0000-00-00', 'Ruang Tiranus', 0);
+(30, 32, 4, 2019, 'Bonti Youth Service', 'Kebaktian', 'Dilaksanakan hari minggu pada Minggu ke-3/bulan.\r\nDimulai pukul 10.00', 'Kebaktian Pemuda', '0000-00-00', 'Ruang Tiranus', 0),
+(31, 33, 4, 2019, 'G2C - Gerak Gerik Ceria', 'Olahraga', 'Olahraga Pemuda GKP Bandung', 'Olahraga Pemuda GKP Bandung', '0000-00-00', 'Gor Situ Aksan', 0);
 
 -- --------------------------------------------------------
 
@@ -120,7 +121,8 @@ CREATE TABLE `tbl_detkeu` (
 --
 
 INSERT INTO `tbl_detkeu` (`detkeu_id`, `detkeg_id`, `detkeu_tgl_trans`, `detkeu_desc`, `detkeu_nom`, `detkeu_realisasi`, `detkeu_bukti`) VALUES
-(27, 32, NULL, NULL, '1500000.00', NULL, NULL);
+(27, 32, NULL, NULL, '1500000.00', NULL, NULL),
+(28, 33, NULL, NULL, '1.00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -323,7 +325,8 @@ CREATE TABLE `tbl_transaksi` (
 --
 
 INSERT INTO `tbl_transaksi` (`trans_id`, `div_id`, `bid_id`, `usr_id`, `trans_tgl`, `update_tgl`, `trans_stat`) VALUES
-(30, 5, 2, 1, '2019-03-20 12:11:33', '2019-03-20 19:11:33', 1);
+(30, 5, 2, 1, '2019-03-20 12:11:33', '2019-03-20 19:11:33', 1),
+(31, 5, 3, 1, '2019-03-21 15:18:45', '2019-03-21 22:18:45', 1);
 
 -- --------------------------------------------------------
 
@@ -483,12 +486,12 @@ ALTER TABLE `tbl_bulan`
 -- AUTO_INCREMENT for table `tbl_detkeg`
 --
 ALTER TABLE `tbl_detkeg`
-  MODIFY `detkeg_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `detkeg_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT for table `tbl_detkeu`
 --
 ALTER TABLE `tbl_detkeu`
-  MODIFY `detkeu_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `detkeu_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 --
 -- AUTO_INCREMENT for table `tbl_divisi`
 --
@@ -538,7 +541,7 @@ ALTER TABLE `tbl_tahun`
 -- AUTO_INCREMENT for table `tbl_transaksi`
 --
 ALTER TABLE `tbl_transaksi`
-  MODIFY `trans_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `trans_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
 -- AUTO_INCREMENT for table `tbl_user`
 --
