@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2019 at 02:13 AM
+-- Generation Time: Mar 21, 2019 at 11:34 AM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.23
 
@@ -87,7 +87,7 @@ CREATE TABLE `tbl_detkeg` (
   `detkeg_jenis` varchar(200) NOT NULL,
   `detkeg_urai` text NOT NULL,
   `detkeg_ket` text,
-  `detkeg_tgl` date NOT NULL,
+  `detkeg_tgl` date DEFAULT NULL,
   `detkeg_tempat` varchar(100) NOT NULL,
   `detkeg_stat` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -97,9 +97,7 @@ CREATE TABLE `tbl_detkeg` (
 --
 
 INSERT INTO `tbl_detkeg` (`trans_id`, `detkeg_id`, `bln_id`, `thn_desc`, `detkeg_nama`, `detkeg_jenis`, `detkeg_urai`, `detkeg_ket`, `detkeg_tgl`, `detkeg_tempat`, `detkeg_stat`) VALUES
-(10, 12, 11, 2018, 'Seminar Memasak', '', 'Seminar Memasak', 'Seminar Memasak', '2018-11-17', 'GSG GKP Bandung', 0),
-(15, 17, 12, 2018, 'Perawatan Ruang Studio', '', 'Perawatan Ruang Studio', 'Perawatan Ruang Studio', '2018-12-01', 'Ruang Studio Pemuda', 0),
-(16, 18, 11, 2018, 'Kebaktian', '', 'Kebaktian', 'Kebaktian', '2018-11-24', 'Ruang Tiranus', 0);
+(30, 32, 4, 2019, 'Bonti Youth Service', 'Kebaktian', 'Dilaksanakan hari minggu pada Minggu ke-3/bulan.\r\nDimulai pukul 10.00', 'Kebaktian Pemuda', '0000-00-00', 'Ruang Tiranus', 0);
 
 -- --------------------------------------------------------
 
@@ -110,9 +108,9 @@ INSERT INTO `tbl_detkeg` (`trans_id`, `detkeg_id`, `bln_id`, `thn_desc`, `detkeg
 CREATE TABLE `tbl_detkeu` (
   `detkeu_id` int(7) NOT NULL,
   `detkeg_id` int(7) NOT NULL,
-  `detkeu_tgl_trans` date NOT NULL,
-  `detkeu_desc` text NOT NULL,
-  `detkeu_nom` decimal(13,2) NOT NULL,
+  `detkeu_tgl_trans` date DEFAULT NULL,
+  `detkeu_desc` text,
+  `detkeu_nom` decimal(13,2) DEFAULT NULL,
   `detkeu_realisasi` decimal(13,2) DEFAULT NULL,
   `detkeu_bukti` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -122,10 +120,7 @@ CREATE TABLE `tbl_detkeu` (
 --
 
 INSERT INTO `tbl_detkeu` (`detkeu_id`, `detkeg_id`, `detkeu_tgl_trans`, `detkeu_desc`, `detkeu_nom`, `detkeu_realisasi`, `detkeu_bukti`) VALUES
-(15, 12, '2018-11-17', 'Bayar Pembicara', '500000.00', '0.00', NULL),
-(20, 17, '2018-12-01', 'Beli Alat Pembersih', '110000.00', '0.00', NULL),
-(21, 18, '2018-11-24', 'Viatikum PF', '1000000.00', '0.00', NULL),
-(22, 18, '2018-11-24', 'Konsumsi', '50000.00', '0.00', NULL);
+(27, 32, NULL, NULL, '1500000.00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -152,7 +147,7 @@ INSERT INTO `tbl_divisi` (`div_id`, `ktgdiv_id`, `div_nama`, `div_desc`) VALUES
 (5, 2, 'Komisi Pemuda', 'Komisi Pemuda'),
 (6, 2, 'Komisi Perempuan', 'Komisi Perempuan'),
 (7, 2, 'Komisi Pria', 'Komisi Pria'),
-(8, 2, 'KPS', 'Komisi Para Sepuh');
+(8, 2, 'Komisi Para Sepuh', 'Komisi Para Sepuh');
 
 -- --------------------------------------------------------
 
@@ -248,6 +243,22 @@ CREATE TABLE `tbl_nmrakun` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_realisasi`
+--
+
+CREATE TABLE `tbl_realisasi` (
+  `real_id` int(7) NOT NULL,
+  `div_id` int(2) NOT NULL,
+  `bid_id` int(2) NOT NULL,
+  `usr_id` int(3) NOT NULL,
+  `real_tgl` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `trans_id` int(7) NOT NULL,
+  `trans_stat` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_role`
 --
 
@@ -302,17 +313,17 @@ CREATE TABLE `tbl_transaksi` (
   `div_id` int(2) NOT NULL,
   `bid_id` int(2) NOT NULL,
   `usr_id` int(3) NOT NULL,
-  `trans_tgl` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `trans_tgl` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_tgl` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `trans_stat` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tbl_transaksi`
 --
 
-INSERT INTO `tbl_transaksi` (`trans_id`, `div_id`, `bid_id`, `usr_id`, `trans_tgl`) VALUES
-(10, 6, 4, 3, '2018-12-06 06:49:33'),
-(15, 5, 5, 2, '2018-12-06 07:14:35'),
-(16, 5, 2, 1, '2018-12-12 06:43:31');
+INSERT INTO `tbl_transaksi` (`trans_id`, `div_id`, `bid_id`, `usr_id`, `trans_tgl`, `update_tgl`, `trans_stat`) VALUES
+(30, 5, 2, 1, '2019-03-20 12:11:33', '2019-03-20 19:11:33', 1);
 
 -- --------------------------------------------------------
 
@@ -416,6 +427,12 @@ ALTER TABLE `tbl_nmrakun`
   ADD UNIQUE KEY `nmrakun_nama` (`nmrakun_nama`);
 
 --
+-- Indexes for table `tbl_realisasi`
+--
+ALTER TABLE `tbl_realisasi`
+  ADD PRIMARY KEY (`real_id`);
+
+--
 -- Indexes for table `tbl_role`
 --
 ALTER TABLE `tbl_role`
@@ -466,12 +483,12 @@ ALTER TABLE `tbl_bulan`
 -- AUTO_INCREMENT for table `tbl_detkeg`
 --
 ALTER TABLE `tbl_detkeg`
-  MODIFY `detkeg_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `detkeg_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 --
 -- AUTO_INCREMENT for table `tbl_detkeu`
 --
 ALTER TABLE `tbl_detkeu`
-  MODIFY `detkeu_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `detkeu_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 --
 -- AUTO_INCREMENT for table `tbl_divisi`
 --
@@ -503,6 +520,11 @@ ALTER TABLE `tbl_ktgtrans`
 ALTER TABLE `tbl_nmrakun`
   MODIFY `nmrakun_id` int(3) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `tbl_realisasi`
+--
+ALTER TABLE `tbl_realisasi`
+  MODIFY `real_id` int(7) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `tbl_role`
 --
 ALTER TABLE `tbl_role`
@@ -516,7 +538,7 @@ ALTER TABLE `tbl_tahun`
 -- AUTO_INCREMENT for table `tbl_transaksi`
 --
 ALTER TABLE `tbl_transaksi`
-  MODIFY `trans_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `trans_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
 -- AUTO_INCREMENT for table `tbl_user`
 --
