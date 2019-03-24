@@ -1,4 +1,39 @@
 <?
+function clean($text)
+{
+  return $text;
+}
+
+function selectBid($bid)
+{
+  global $conn;
+  if($bid != '1')
+  {
+    $fBid = "WHERE bid_id = '$bid'";
+  }
+
+  ?>
+   Bidang : <select class="form-control-sm" id="filterBid" name="filterBid">
+              <option value="">- Bidang  -</option>
+              <?php
+              if($bid == '1'){
+                echo '<option value="all">Semua</option>';
+              }
+              $get_bid = "SELECT * FROM tbl_bidang $fBid ORDER BY bid_id";
+              $query = mysqli_query($conn,$get_bid);
+              while ($row = mysqli_fetch_array($query)) 
+              {
+              ?>
+                  <option value="<?php echo $row['bid_id']; ?>">
+                      <?php echo $row['bid_nama']; ?>
+                  </option>
+              <?php
+              }
+              ?>
+          </select>&nbsp;
+  <?
+}
+
 function split2curr($nilai) 
 {  
     $split=explode('.',$nilai);
@@ -83,6 +118,20 @@ function DisplayDate($val){
     $date = new DateTime($val);
     $datefull = date_format($date,"d F Y"); 
     return $datefull;
+}
+
+function refresh()
+{
+  if(isset($_SERVER['HTTPS']) &&  
+            $_SERVER['HTTPS'] === 'on') 
+    $link = "https"; 
+    else
+        $link = "http"; 
+    $link .= "://"; 
+    $link .= $_SERVER['HTTP_HOST']; 
+    $link .= $_SERVER['PHP_SELF']; 
+
+    return($link);
 }
 
 function msg($text)
@@ -175,7 +224,7 @@ function sidebar()
             </span>
           </a>
            <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-list"></i> Rekap Kegiatan </a></li>
+            <li><a href="../main/kegiatan.php"><i class="fa fa-list"></i> Rekap Kegiatan </a></li>
             <li><a href="#"><i class="fa fa-list"></i> Rekap Keuangan</a></li>
           </ul>
         </li>
@@ -269,7 +318,7 @@ function sidebarIdx()
           </li>
         <?php } ?>
          <li>
-          <a href="../SIP_GKP_BDG/transaksi.php">
+          <a href="../SIP_GKP_BDG/main/transaksi.php">
             <i class="fa fa-sign-out"></i> <span>Transaksi</span>
             <span class="pull-right-container">
               <small class="label pull-right"></small>
@@ -284,7 +333,7 @@ function sidebarIdx()
             </span>
           </a>
            <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-list"></i> Rekap Kegiatan </a></li>
+            <li><a href="../SIP_GKP_BDG/main/kegiatan.php"><i class="fa fa-list"></i> Rekap Kegiatan </a></li>
             <li><a href="#"><i class="fa fa-list"></i> Rekap Keuangan</a></li>
           </ul>
         </li>
@@ -299,7 +348,7 @@ function sidebarIdx()
         </li>
 
          <li>
-          <a href="../SIP_GKP_BDG/logout.php">
+          <a href="../SIP_GKP_BDG/main/logout.php">
             <i class="fa fa-sign-out"></i> <span>Sign Out</span>
             <span class="pull-right-container">
               <small class="label pull-right"></small>
