@@ -281,7 +281,11 @@ global $conn;
                         <div class="row" style="padding-left:15px; width: 100%; padding-bottom: 0.5%;">
                           <div class="col col-3">Anggaran</div>
                           <div>: &nbsp;</div> 
+<<<<<<< HEAD
                           <div> <input type="text" name="nom_keu" id="nom_keu" class="form-control form-control-sm" required value="<? echo $row_trans['detkeu_nom'];?>" style="text-align: "></div>
+=======
+                          <div> <input type="text" name="nom_keu" id="nom_keu" class="form-control form-control-sm" required value="<? echo split2curr($row_trans['detkeu_nom']);?>" style="text-align: "></div>
+>>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
                         </div>
                         <br/>
                         

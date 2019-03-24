@@ -1,5 +1,8 @@
 <?
+<<<<<<< HEAD
 
+=======
+>>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 function user($username)
 {
   global $conn;
@@ -32,6 +35,7 @@ function modalViewTrans($id)
 	              <div class="container-fluid">
 	                 <?
 	                    $getdet_trans ="SELECT 
+<<<<<<< HEAD
 	                                     a.*,
 	                                     b.*,
 	                                     c.*,
@@ -42,11 +46,39 @@ function modalViewTrans($id)
 	                                    LEFT JOIN tbl_bidang c ON a.bid_id = c.bid_id
 	                                  WHERE a.trans_id = '$id' 
 	                                  ORDER BY a.bln_id DESC";
+=======
+	                                      a.trans_id,
+	                                      a.trans_tgl,
+	                                      b.div_nama,
+	                                      c.bid_nama,
+	                                      d.usr_nama,
+	                                      e.bln_id,
+	                                      e.thn_desc,
+	                                      e.detkeg_nama,
+	                                      e.detkeg_jenis,
+	                                      e.detkeg_urai,
+	                                      e.detkeg_ket,
+	                                      e.detkeg_tgl,
+	                                      e.detkeg_tempat,
+	                                      e.detkeg_id
+	                                  FROM 
+	                                      tbl_transaksi a 
+	                                    LEFT JOIN tbl_divisi b ON a.div_id = b.div_id
+	                                    LEFT JOIN tbl_bidang c ON a.bid_id = c.bid_id
+	                                    LEFT JOIN tbl_user d ON a.usr_id = d.usr_id
+	                                    LEFT JOIN tbl_detkeg e ON a.trans_id = e.trans_id
+	                                  WHERE a.trans_id = '$id' 
+	                                  ORDER BY e.bln_id DESC, a.trans_tgl ASC";
+>>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 	                    //echo $getdet_trans;
 	                    $execdet_trans = mysqli_query($conn, $getdet_trans);
 	                    $row_trans = mysqli_fetch_array($execdet_trans,MYSQLI_ASSOC);
 
+<<<<<<< HEAD
 	                    $idDetKeg     	= $row_trans['detkeg_id'];
+=======
+	                    $idDetKeg     = $row_trans['detkeg_id'];
+>>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 	                    $bulan_det      = $row_trans['bln_id'];
 
 	                    $getdet_bln    = "SELECT * FROM tbl_bulan WHERE bln_id = '$bulan_det'";
@@ -77,7 +109,11 @@ function modalViewTrans($id)
 	                    <a class="nav-link active" href="#vtranskeg<? echo $idDetKeg;?>" role="tab" data-toggle="tab">Kegiatan</a>
 	                  </li>
 	                  <li class="nav-item">
+<<<<<<< HEAD
 	                  <a class="nav-link" href="#vtranskeu<? echo $idDetKeg;?>" role="tab" data-toggle="tab">Pengeluaran</a>
+=======
+	                    <a class="nav-link" href="#vtranskeu<? echo $idDetKeg;?>" role="tab" data-toggle="tab">Pengeluaran</a>
+>>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 	                  </li>
 	                </ul>
 
@@ -89,6 +125,7 @@ function modalViewTrans($id)
 	                   
 	                      <div class="row">
 	                        <div class="col col-3 no-gutters">Nama Kegiatan</div>
+<<<<<<< HEAD
 	                        <div class="col">: <? echo $row_trans['real_nama'] ;?></div>
 	                      </div>
 	                      <div class="row">
@@ -98,6 +135,17 @@ function modalViewTrans($id)
 	                      <div class="row">
 	                        <div class="col col-3 no-gutters" >Tempat</div>
 	                        <div class="col">: <? echo $row_trans['real_tempt'];?></div>
+=======
+	                        <div class="col">: <? echo $row_trans['detkeg_nama'];?></div>
+	                      </div>
+	                      <div class="row">
+	                        <div class="col col-3 no-gutters" >Jenis Kegiatan</div>
+	                        <div class="col">: <? echo $row_trans['detkeg_jenis'];?></div>
+	                      </div>
+	                      <div class="row">
+	                        <div class="col col-3 no-gutters" >Tempat</div>
+	                        <div class="col">: <? echo $row_trans['detkeg_tempat'];?></div>
+>>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 	                      </div>
 	                      <br/>
 	                      <div class="row">
@@ -105,7 +153,11 @@ function modalViewTrans($id)
 	                      </div>
 	                      <div class="row" style="padding-left:15px; width: 100%;">
 	                        <span class="border border-secondary rounded col">
+<<<<<<< HEAD
 	                          <div class="col" style="padding-left: 5px;"><pre><? echo  $row_trans['real_urai'];?></pre></div>
+=======
+	                          <div class="col" style="padding-left: 5px;"><pre><? echo  $row_trans['detkeg_urai'];?></pre></div>
+>>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 	                        </span>
 	                      </div>
 	                      <div class="row">
@@ -113,6 +165,7 @@ function modalViewTrans($id)
 	                      </div>
 	                      <div class="row" style="padding-left:15px; width: 100%;">
 	                          <span class="border border-secondary rounded col">
+<<<<<<< HEAD
 	                            <div class="col" style="padding-left: 5px;"><pre><? echo $row_trans['real_ket'];?></pre></div>
 	                          </span>
 	                      </div>
@@ -144,6 +197,38 @@ function modalViewTrans($id)
 	                          </span>
 	                      </div>
 	                   </div>
+=======
+	                            <div class="col" style="padding-left: 5px;"><pre><? echo $row_trans['detkeg_ket'];?></pre></div>
+	                          </span>
+	                      </div>
+	                  </div>
+
+	                  <!-- tab view keuangan/pengeluaran -->
+	                  <div role="tabpanel" class="tab-pane show fade" id="vtranskeu<? echo $idDetKeg;?>">
+	                    <?
+	                      $get_keu = "SELECT detkeg_id, detkeu_desc, detkeu_tgl_trans, detkeu_nom FROM tbl_detkeu
+	                                  WHERE detkeg_id = '$idDetKeg'";
+	                      $exec_keu = mysqli_query($conn,$get_keu);
+	                      while($row_keu = mysqli_fetch_array($exec_keu,MYSQLI_ASSOC))
+	                      {
+	                    ?>
+	                        <div class="row">
+	                          <div class="col col-2 no-gutters">Biaya</div>
+	                          <div class="col">: <? echo $row_keu['detkeu_desc'];?></div>
+	                        </div>
+	                        <div class="row">
+	                          <div class="col col-2 no-gutters" >Tanggal</div>
+	                          <div class="col">: <? echo tgl_indo($row_keu['detkeu_tgl_trans']);?></div>
+	                        </div>
+	                        <div class="row">
+	                          <div class="col col-2 no-gutters" >Nominal</div>
+	                          <div class="col">: Rp. <? echo split2curr($row_keu['detkeu_nom']);?></div>
+	                        </div>
+	                    <?
+	                    }
+	                    ?>
+	                  </div>
+>>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 	                </div>
 	            </div>
 	          <div class="modal-footer">
@@ -157,6 +242,7 @@ function modalViewTrans($id)
 <?
 }
 
+<<<<<<< HEAD
 function modalEditTrans($prog)
 {
 global $conn;
@@ -356,6 +442,8 @@ global $conn;
 <?
 }
 
+=======
+>>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 function modalDelTrans($transId) {
 	global $conn;
 	?>

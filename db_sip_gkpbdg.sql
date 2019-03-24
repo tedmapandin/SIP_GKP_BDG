@@ -3,9 +3,15 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
+<<<<<<< HEAD
 -- Generation Time: Mar 24, 2019 at 05:02 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 5.6.40
+=======
+-- Generation Time: Mar 21, 2019 at 05:23 PM
+-- Server version: 10.1.13-MariaDB
+-- PHP Version: 5.6.23
+>>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -255,6 +261,7 @@ CREATE TABLE `tbl_realisasi` (
   `div_id` int(2) NOT NULL,
   `bid_id` int(2) NOT NULL,
   `usr_id` int(3) NOT NULL,
+<<<<<<< HEAD
   `trans_id` int(7) NOT NULL,
   `detkeg_id` int(7) NOT NULL,
   `bln_id` int(2) NOT NULL,
@@ -277,6 +284,13 @@ CREATE TABLE `tbl_realisasi` (
 INSERT INTO `tbl_realisasi` (`real_id`, `div_id`, `bid_id`, `usr_id`, `trans_id`, `detkeg_id`, `bln_id`, `thn_desc`, `real_anggaran`, `real_nama`, `real_jenis`, `real_urai`, `real_ket`, `real_tempt`, `real_keu`, `real_keu_urai`, `real_stat`) VALUES
 (1, 5, 2, 0, 30, 32, 4, 2019, '1500000.00', 'Bonti Youth Service', 'Kebaktian', 'Kebaktian Pemuda GKP Bandung', 'Kebaktian Pemuda GKP Bandung', 'GSG GKP Bandung', '1400000.00', 'Viatikum dan Konsumsi', 2);
 
+=======
+  `real_tgl` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `trans_id` int(7) NOT NULL,
+  `trans_stat` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+>>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 -- --------------------------------------------------------
 
 --
@@ -344,7 +358,11 @@ CREATE TABLE `tbl_transaksi` (
 --
 
 INSERT INTO `tbl_transaksi` (`trans_id`, `div_id`, `bid_id`, `usr_id`, `trans_tgl`, `update_tgl`, `trans_stat`) VALUES
+<<<<<<< HEAD
 (30, 5, 2, 1, '2019-03-20 12:11:33', '2019-03-20 19:11:33', 2),
+=======
+(30, 5, 2, 1, '2019-03-20 12:11:33', '2019-03-20 19:11:33', 1),
+>>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 (31, 5, 3, 1, '2019-03-21 15:18:45', '2019-03-21 22:18:45', 1);
 
 -- --------------------------------------------------------
@@ -508,13 +526,19 @@ ALTER TABLE `tbl_bulan`
 --
 ALTER TABLE `tbl_detkeg`
   MODIFY `detkeg_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 --
 -- AUTO_INCREMENT for table `tbl_detkeu`
 --
 ALTER TABLE `tbl_detkeu`
   MODIFY `detkeu_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 --
 -- AUTO_INCREMENT for table `tbl_divisi`
 --
@@ -558,6 +582,11 @@ ALTER TABLE `tbl_realisasi`
   MODIFY `real_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `tbl_realisasi`
+--
+ALTER TABLE `tbl_realisasi`
+  MODIFY `real_id` int(7) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `tbl_role`
 --
 ALTER TABLE `tbl_role`
@@ -574,7 +603,10 @@ ALTER TABLE `tbl_tahun`
 --
 ALTER TABLE `tbl_transaksi`
   MODIFY `trans_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 --
 -- AUTO_INCREMENT for table `tbl_user`
 --
