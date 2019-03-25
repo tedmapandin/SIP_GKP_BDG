@@ -1,9 +1,9 @@
 <?php 
   session_start();
 
-  error_reporting(E_ALL); 
+  /*error_reporting(E_ALL); 
   ini_set('display_errors', TRUE); 
-  ini_set('display_startup_errors', TRUE); 
+  ini_set('display_startup_errors', TRUE); */
 
   include("../conn/conn.php");
   include("../control/functions.php");
@@ -38,12 +38,6 @@
   }
 
   //fungsi untuk steril input
-  function clean($data) {
-      $data = trim($data);
-      $data = stripslashes($data);
-      $data = htmlspecialchars($data);
-      return $data;
-  }
 
   //ambil input user baru
   if ($_SERVER["REQUEST_METHOD"] == "POST") 
@@ -245,7 +239,7 @@
   //delete user
   if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delUser']))
   {
-      $deleteUser = "DELETE FROM tbl_user WHERE usr_id = '$userid'";
+      $deleteUser = "UPDATE tbl_user SET usr_stat=0 WHERE usr_id = '$user_id'";
       $execDelUser = mysqli_query($conn,$deleteUser);
 
       if ($execDelUser !== TRUE) 
