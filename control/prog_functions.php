@@ -1,10 +1,4 @@
 <?
-/*.......................................FUNCTION PROGRAM.....................................................*/
-function clean($data) 
-{
-    return $data;
-}
-
 function modalInputProg() 
 {
   global $conn;
@@ -19,12 +13,13 @@ function modalInputProg()
   $divi = $row['div_id'];
   $id_usr = $row['usr_id'];
 ?>
+
 <form id="lap" class="form-horizontal" method="post" enctype="multipart/form-data">
             <div class="modal-dialog modal-lg" role="document">
-
                 <div class="modal-content">
                     <div class="modal-header" style="background-color: #3C8DBC;">
                         <h4 class="modal-title" style="color: white;"><b>PROGRAM BARU</b></h4>
+                        <? //echo "OK";?>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><span class="fa fa-close"></span></span></button>
                     </div>
                     <div class="modal-body">
@@ -281,11 +276,7 @@ global $conn;
                         <div class="row" style="padding-left:15px; width: 100%; padding-bottom: 0.5%;">
                           <div class="col col-3">Anggaran</div>
                           <div>: &nbsp;</div> 
-<<<<<<< HEAD
                           <div> <input type="text" name="nom_keu" id="nom_keu" class="form-control form-control-sm" required value="<? echo $row_trans['detkeu_nom'];?>" style="text-align: "></div>
-=======
-                          <div> <input type="text" name="nom_keu" id="nom_keu" class="form-control form-control-sm" required value="<? echo split2curr($row_trans['detkeu_nom']);?>" style="text-align: "></div>
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
                         </div>
                         <br/>
                         

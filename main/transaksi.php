@@ -5,16 +5,10 @@ error_reporting(E_ALL);
 ini_set('display_errors', TRUE); 
 ini_set('display_startup_errors', TRUE); 
 
-<<<<<<< HEAD
+
 include("../conn/conn.php");
 include("../control/functions.php");
 include("../control/trans_functions.php");
-=======
-  include("../conn/conn.php");
-  include("../control/functions.php");
-  include("../control/trans_functions.php");
-  $title_pg='Transaksi';
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 
 $title_pg='Transaksi';
 
@@ -23,7 +17,6 @@ if($_SESSION['status'] !="login")
   header("location:http://localhost/SIP_GKP_BDG/main/login.php");
 }
 
-<<<<<<< HEAD
 $user = $_SESSION['username'];
 $usrid = $_SESSION['usr_id'];
 $get_user   = "SELECT * FROM tbl_user where usr_nama='$user'";
@@ -35,22 +28,6 @@ $ktgdiv =$row['ktgdiv_id'];
 $bidang = $row['bid_id'];
 $divi = $row['div_id'];
 $id_usr = $row['usr_id'];
-=======
-  $user = $_SESSION['username'];
-  $usrid = $_SESSION['usr_id'];
-  $get_user   = "SELECT * FROM tbl_user where usr_nama='$user'";
-  $login    = mysqli_query($conn,$get_user);
-  $row = mysqli_fetch_array($login,MYSQLI_ASSOC);
-  
-  $role = $row['role_id'];
-  $ktgdiv =$row['ktgdiv_id'];
-  $bidang = $row['bid_id'];
-  $divi = $row['div_id'];
-  $id_usr = $row['usr_id'];
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
-
-
-<<<<<<< HEAD
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editProg']))
 {
@@ -129,21 +106,6 @@ if(isset($_POST['progSearch']))
     {
       $filter = "";
     }
-=======
-  /*$id_trans="";
-  if(!empty($_POST))
-  {
-    $id_trans = $_POST['transid'];
-  }*/
-
-  if(!empty($_POST)) {
-    $filterBid = $_POST['filterBid'];
-  }
-
-  if($bidang != '1')
-  {
-    $fBid = "WHERE bid_id = '$bidang'";
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
   }
 }
 
@@ -217,25 +179,7 @@ if($bidang != '1')
                   <table cellpadding="5" cellspacing="5"width="100%">
                     <tr>
                       <td>
-<<<<<<< HEAD
                           <? echo selectBid($bidang);?> &nbsp;
-=======
-                          Bidang : <select class="form-control-sm" id="filterBid" name="filterBid">
-                              <option value="">- Bidang  -</option>
-                              <?php
-                              $get_bid = "SELECT * FROM tbl_bidang $fBid ORDER BY bid_id";
-                              $query = mysqli_query($conn,$get_bid);
-                              while ($row = mysqli_fetch_array($query)) 
-                              {
-                              ?>
-                                  <option value="<?php echo $row['bid_id']; ?>">
-                                      <?php echo $row['bid_nama']; ?>
-                                  </option>
-                              <?php
-                              }
-                              ?>
-                          </select>&nbsp;
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
                           <input type="submit" class="btn btn-primary btn-sm" name="progSearch" value="Submit">
                       </td>
                     </tr>
@@ -249,10 +193,6 @@ if($bidang != '1')
                   <table id="laptab" class="table table-sm table-striped" style="font-size:12px;">
                     <thead>    
                     <tr align="center">
-<<<<<<< HEAD
-=======
-                        <th width="10">&nbsp;</th>
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
                         <th width="10">No.</th>
                         <th>Divisi</th>
                         <th>Bidang</th>
@@ -278,12 +218,8 @@ if($bidang != '1')
                                             e.detkeg_tempat,
                                             e.bln_id,
                                             e.thn_desc,
-<<<<<<< HEAD
                                             f.detkeu_nom,
                                             a.trans_stat
-=======
-                                            f.detkeu_nom
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
                                         FROM 
                                             tbl_transaksi a 
                                           LEFT JOIN tbl_divisi b ON a.div_id = b.div_id
@@ -291,11 +227,7 @@ if($bidang != '1')
                                           LEFT JOIN tbl_user d ON a.usr_id = d.usr_id
                                           LEFT JOIN tbl_detkeg e ON a.trans_id = e.trans_id
                                           LEFT JOIN tbl_detkeu f ON e.detkeg_id = f.detkeg_id
-<<<<<<< HEAD
                                          $filter
-=======
-                                          WHERE a.bid_id = '$filterBid'
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
                                         ORDER BY e.bln_id DESC, a.trans_tgl ASC";
                                         //echo $get_trans;
                             $exec_trans = mysqli_query($conn,$get_trans);
@@ -321,17 +253,10 @@ if($bidang != '1')
                                     $row_thn    = mysqli_fetch_array($exec_thn,MYSQLI_ASSOC);
                                     $thn        = $row_thn['thn_desc'];
                                     $tgl_keg    = new DateTime($row['trans_tgl']);
-<<<<<<< HEAD
                                     $tStat      = $row['trans_stat'];
                                     
                                     ?>
                                     <tr style="vertical-align: middle;">
-=======
-                                    
-                                    ?>
-                                    <tr style="vertical-align: middle;">
-                                        <td><input type="checkbox"></td>
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
                                         <td><?php echo $i;?>.</td>
                                         <td><?php echo $row['div_nama'];?></td>
                                         <td><?php echo $row['bid_nama'];?></td>
@@ -340,7 +265,6 @@ if($bidang != '1')
                                         <td><?php echo $row['detkeg_tempat'];?></td>
                                         <td align="right"><?php echo split2curr($row['detkeu_nom']);?></td>
                                         <td align="right"><?php echo $row['usr_nama']?></td>
-<<<<<<< HEAD
                                         <? 
                                         if($tStat == '1') 
                                         { 
@@ -367,18 +291,6 @@ if($bidang != '1')
                                     <?
                                     echo modalViewTrans($transId);
                                     echo modalEditTrans($transId); 
-=======
-                                        <td style="text-align:right;">
-                                            <!-- <input type="hidden" name="transid" id="transid" value=""> -->
-                                            <a class="btn" data-toggle="modal" data-target="#viewLaporan<? echo $transId;?>" ><span class="fa fa-eye"></span></a>
-                                            <a class="btn" data-toggle="modal" data-target="#editLaporan<? echo $transId;?>"><span class="badge badge-info">Lapor</span></a>
-                                             <a class="btn" data-toggle="modal" data-target="#transDel<? echo $transId;?>"><span class="fa fa-trash"></span></a>
-                                            <a class="btn" href="#"><span class="fa fa-refresh"></span></a>
-                                        </td>
-                                    </tr>
-                                    <?
-                                    echo modalViewTrans($transId); 
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
                                 }
                             }
                             else
@@ -400,11 +312,7 @@ if($bidang != '1')
         </div>
     </section>
   </div>
-<<<<<<< HEAD
 <?php require_once('../main/footer.php');?>
-=======
-  <?php require_once('../main/footer.php');?>
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 <script type="text/javascript">
   $(document).ready(function(){
     //group add limit
@@ -422,14 +330,6 @@ if($bidang != '1')
     });
 }); 
 </script>
-<<<<<<< HEAD
-<script>
-  $( function() {
-    $( "#tglKeg" ).datepicker();
-  } );
-  </script>
-=======
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 </form>
 </body>
 </html>

@@ -1,21 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
--- https://www.phpmyadmin.net/
+-- version 4.5.1
+-- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
-<<<<<<< HEAD
--- Generation Time: Mar 24, 2019 at 05:02 PM
--- Server version: 10.1.38-MariaDB
--- PHP Version: 5.6.40
-=======
--- Generation Time: Mar 21, 2019 at 05:23 PM
+-- Generation Time: Mar 25, 2019 at 04:00 AM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.23
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -105,8 +97,8 @@ CREATE TABLE `tbl_detkeg` (
 --
 
 INSERT INTO `tbl_detkeg` (`trans_id`, `detkeg_id`, `bln_id`, `thn_desc`, `detkeg_nama`, `detkeg_jenis`, `detkeg_urai`, `detkeg_ket`, `detkeg_tgl`, `detkeg_tempat`, `detkeg_stat`) VALUES
-(30, 32, 4, 2019, 'Bonti Youth Service', 'Kebaktian', 'Dilaksanakan hari minggu pada Minggu ke-3/bulan.\r\nDimulai pukul 10.00', 'Kebaktian Pemuda', '0000-00-00', 'Ruang Tiranus', 0),
-(31, 33, 4, 2019, 'G2C - Gerak Gerik Ceria', 'Olahraga', 'Olahraga Pemuda GKP Bandung', 'Olahraga Pemuda GKP Bandung', '0000-00-00', 'Gor Situ Aksan', 0);
+(32, 34, 4, 2019, 'Bonti Youth Service', 'Kebaktian', 'Kebaktian Pemuda', 'Kebaktian Pemuda', '0000-00-00', 'GSG GKP Bandung', 0),
+(33, 35, 4, 2019, 'G2C - Gerak Gerik Ceria', 'Olahraga', 'Olahraga kaum Muda', 'Olahraga kaum Muda', '0000-00-00', 'Gor Situ Aksan', 0);
 
 -- --------------------------------------------------------
 
@@ -129,8 +121,8 @@ CREATE TABLE `tbl_detkeu` (
 --
 
 INSERT INTO `tbl_detkeu` (`detkeu_id`, `detkeg_id`, `detkeu_tgl_trans`, `detkeu_desc`, `detkeu_nom`, `detkeu_realisasi`, `detkeu_bukti`) VALUES
-(27, 32, NULL, NULL, '1500000.00', NULL, NULL),
-(28, 33, NULL, NULL, '1.00', NULL, NULL);
+(29, 34, NULL, NULL, '1500000.00', NULL, NULL),
+(30, 35, NULL, NULL, '500000.00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -261,7 +253,6 @@ CREATE TABLE `tbl_realisasi` (
   `div_id` int(2) NOT NULL,
   `bid_id` int(2) NOT NULL,
   `usr_id` int(3) NOT NULL,
-<<<<<<< HEAD
   `trans_id` int(7) NOT NULL,
   `detkeg_id` int(7) NOT NULL,
   `bln_id` int(2) NOT NULL,
@@ -282,15 +273,8 @@ CREATE TABLE `tbl_realisasi` (
 --
 
 INSERT INTO `tbl_realisasi` (`real_id`, `div_id`, `bid_id`, `usr_id`, `trans_id`, `detkeg_id`, `bln_id`, `thn_desc`, `real_anggaran`, `real_nama`, `real_jenis`, `real_urai`, `real_ket`, `real_tempt`, `real_keu`, `real_keu_urai`, `real_stat`) VALUES
-(1, 5, 2, 0, 30, 32, 4, 2019, '1500000.00', 'Bonti Youth Service', 'Kebaktian', 'Kebaktian Pemuda GKP Bandung', 'Kebaktian Pemuda GKP Bandung', 'GSG GKP Bandung', '1400000.00', 'Viatikum dan Konsumsi', 2);
+(2, 5, 1, 0, 32, 34, 4, 2019, '1500000.00', 'Bonti Youth Service', 'Kebaktian', 'Penghadir : 32 orang', 'Olahraga badminton', 'GSG GKP Bandung', '1200000.00', 'beli minum dan shuttlecock', 2);
 
-=======
-  `real_tgl` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `trans_id` int(7) NOT NULL,
-  `trans_stat` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 -- --------------------------------------------------------
 
 --
@@ -358,12 +342,8 @@ CREATE TABLE `tbl_transaksi` (
 --
 
 INSERT INTO `tbl_transaksi` (`trans_id`, `div_id`, `bid_id`, `usr_id`, `trans_tgl`, `update_tgl`, `trans_stat`) VALUES
-<<<<<<< HEAD
-(30, 5, 2, 1, '2019-03-20 12:11:33', '2019-03-20 19:11:33', 2),
-=======
-(30, 5, 2, 1, '2019-03-20 12:11:33', '2019-03-20 19:11:33', 1),
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
-(31, 5, 3, 1, '2019-03-21 15:18:45', '2019-03-21 22:18:45', 1);
+(32, 5, 2, 1, '2019-03-25 02:41:15', '2019-03-25 09:41:15', 2),
+(33, 5, 3, 1, '2019-03-25 02:47:28', '2019-03-25 09:47:28', 1);
 
 -- --------------------------------------------------------
 
@@ -514,105 +494,76 @@ ALTER TABLE `tbl_user`
 --
 ALTER TABLE `tbl_bidang`
   MODIFY `bid_id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
 --
 -- AUTO_INCREMENT for table `tbl_bulan`
 --
 ALTER TABLE `tbl_bulan`
   MODIFY `bln_id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
 --
 -- AUTO_INCREMENT for table `tbl_detkeg`
 --
 ALTER TABLE `tbl_detkeg`
-  MODIFY `detkeg_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
-<<<<<<< HEAD
-
-=======
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
+  MODIFY `detkeg_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 --
 -- AUTO_INCREMENT for table `tbl_detkeu`
 --
 ALTER TABLE `tbl_detkeu`
-  MODIFY `detkeu_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
-<<<<<<< HEAD
-
-=======
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
+  MODIFY `detkeu_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
 -- AUTO_INCREMENT for table `tbl_divisi`
 --
 ALTER TABLE `tbl_divisi`
   MODIFY `div_id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
 --
 -- AUTO_INCREMENT for table `tbl_images`
 --
 ALTER TABLE `tbl_images`
   MODIFY `img_id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `tbl_jabatan`
 --
 ALTER TABLE `tbl_jabatan`
   MODIFY `jab_id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
 --
 -- AUTO_INCREMENT for table `tbl_ktgdiv`
 --
 ALTER TABLE `tbl_ktgdiv`
   MODIFY `ktgdiv_id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
 --
 -- AUTO_INCREMENT for table `tbl_ktgtrans`
 --
 ALTER TABLE `tbl_ktgtrans`
   MODIFY `ktgtrans_id` int(1) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
 --
 -- AUTO_INCREMENT for table `tbl_nmrakun`
 --
 ALTER TABLE `tbl_nmrakun`
   MODIFY `nmrakun_id` int(3) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `tbl_realisasi`
 --
 ALTER TABLE `tbl_realisasi`
-  MODIFY `real_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `tbl_realisasi`
---
-ALTER TABLE `tbl_realisasi`
-  MODIFY `real_id` int(7) NOT NULL AUTO_INCREMENT;
+  MODIFY `real_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `tbl_role`
 --
 ALTER TABLE `tbl_role`
   MODIFY `role_id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
 --
 -- AUTO_INCREMENT for table `tbl_tahun`
 --
 ALTER TABLE `tbl_tahun`
   MODIFY `thn_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
 --
 -- AUTO_INCREMENT for table `tbl_transaksi`
 --
 ALTER TABLE `tbl_transaksi`
-  MODIFY `trans_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
-<<<<<<< HEAD
-
-=======
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
+  MODIFY `trans_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT for table `tbl_user`
 --
 ALTER TABLE `tbl_user`
   MODIFY `usr_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
-
 --
 -- Constraints for dumped tables
 --
@@ -653,7 +604,6 @@ ALTER TABLE `tbl_user`
   ADD CONSTRAINT `fk_usr_jab` FOREIGN KEY (`jab_id`) REFERENCES `tbl_jabatan` (`jab_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_usr_ktgdiv` FOREIGN KEY (`ktgdiv_id`) REFERENCES `tbl_ktgdiv` (`ktgdiv_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_usr_role` FOREIGN KEY (`role_id`) REFERENCES `tbl_role` (`role_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

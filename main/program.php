@@ -9,7 +9,6 @@
   include("../control/functions.php");
   include("../control/prog_functions.php");
   $title_pg='Program';
-
 // Program to display complete URL          
 // Display the link 
 
@@ -29,22 +28,11 @@
   $bidang = $row['bid_id'];
   $divi = $row['div_id'];
   $id_usr = $row['usr_id'];
+
   
   $filt="";
   if($ktgdiv != '1' || $ktgdiv != '3')
   {
-    if($bidang != '1')
-    {
-<<<<<<< HEAD
-      $filt = "WHERE a.div_id = '$divi' AND a.bid_id = '$bidang' and a.trans_stat = '1'";
-    }
-    else
-    {
-      $filt = "WHERE a.div_id = '$divi' and a.trans_stat = '1'";
-    }
-  }
-
-=======
       if($bidang != '1')
       {
         $filt = "WHERE a.div_id = '$divi' AND a.bid_id = '$bidang' and a.trans_stat = '1'";
@@ -53,13 +41,11 @@
       {
         $filt = "WHERE a.div_id = '$divi' and a.trans_stat = '1'";
       }
-    }
   }
   else
   {
     $filt = "WHERE a.trans_stat = '1'";
   }
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 
  $bidLap=$blnLap=$thnLap=$nama_keg=$jenis_keg=$tgl_keg=$tmp_keg=$urai_keg=$ket_keg=$tgl_keu=$ket_keu=$nom_keu="";
   $errorLap=array();
@@ -74,11 +60,10 @@
       {
         $id_keg = $_POST['keg_id'];
       }
-
-      if(empty($_POST['lapBid'])){
+      if(empty($_POST['filterBid'])){
           $errorLap[] = "Tentukan Bidang";
       }else {
-          $bidLap = clean($_POST['lapBid']);
+          $bidLap = clean($_POST['filterBid']);
       }
       if(empty($_POST['lapMonth'])){
           $errorLap[] = "Tentukan Bulan";
@@ -120,7 +105,6 @@
       }else {
           $nom_keu = clean($_POST['nom_keu']);
       }
-
       if(isset($_POST['saveProg']) && count($errorLap) < 1)
       {
           $sql = "INSERT INTO tbl_transaksi (div_id,bid_id,usr_id,trans_stat)VALUES ('$divi','$bidLap','$id_usr',1)";
@@ -151,7 +135,6 @@
           if ($execkeu !== TRUE) 
           {
               echo "Error: " . $sqlkeu . "<br>" . $conn->error;
-<<<<<<< HEAD
           }
           //header("location:http://localhost/SIP_GKP_BDG/main/program.php");
       }
@@ -204,60 +187,6 @@
               echo "Error: " . $sqlkeu . "<br>" . $conn->error;
           }
           //header("location:http://localhost/SIP_GKP_BDG/main/program.php");
-=======
-          }
-          //header("location:http://localhost/SIP_GKP_BDG/main/program.php");
-      }
-
-      if(isset($_POST['editProg']) && count($errorLap) < 1)
-      {
-          $sql = "UPDATE 
-                    tbl_transaksi 
-                  SET 
-                    bid_id='$bidLap',usr_id='$id_usr' 
-                  WHERE trans_id='$id_trans'";
-          //echo $sql.'<br/>';
-          $exec = mysqli_query($conn,$sql);
-
-          if ($exec !== TRUE) 
-          {
-              echo "Error: " . $sql . "<br>" . $conn->error;
-          }
-
-          $sqlkeg ="UPDATE 
-                      tbl_detkeg 
-                    SET 
-                      bln_id='$blnLap', 
-                      thn_desc='$thnLap', 
-                      detkeg_nama='$nama_keg', 
-                      detkeg_jenis='$jenis_keg', 
-                      detkeg_urai='$urai_keg', 
-                      detkeg_tempat='$tmp_keg',
-                      detkeg_ket='$ket_keg'
-                    WHERE 
-                      trans_id='$id_trans'";
-          //echo $sqlkeg.'<br/>';
-          $execkeg = mysqli_query($conn,$sqlkeg);
-
-          if ($execkeg !== TRUE) 
-          {
-              echo "Error: " . $sqlkeg . "<br>" . $conn->error;
-          }
-
-          $sqlkeu ="UPDATE
-                      tbl_detkeu
-                    SET
-                      detkeu_nom = '$nom_keu'
-                    WHERE
-                      detkeg_id = '$id_keg'";
-          //echo $sqlkeu;
-          $execkeu = mysqli_query($conn,$sqlkeu);
-          if ($execkeu !== TRUE) 
-          {
-              echo "Error: " . $sqlkeu . "<br>" . $conn->error;
-          }
-          //header("location:http://localhost/SIP_GKP_BDG/main/program.php");
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
       }
   }
 

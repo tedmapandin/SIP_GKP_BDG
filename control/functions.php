@@ -1,5 +1,4 @@
 <?
-<<<<<<< HEAD
 function clean($text)
 {
   return $text;
@@ -34,9 +33,6 @@ function selectBid($bid)
           </select>&nbsp;
   <?
 }
-=======
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
-
 function split2curr($nilai) 
 {  
     $split=explode('.',$nilai);

@@ -28,14 +28,6 @@
   $divi = $row['div_id'];
   $id_usr = $row['usr_id'];
 
-<<<<<<< HEAD
-=======
-  function clean($data) 
-  {
-      return $data;
-  }
-
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
   /*$id_trans="";
   if(!empty($_POST))
   {
@@ -43,17 +35,12 @@
   }*/
 
   $qry="";
-<<<<<<< HEAD
 /*  if(!empty($_POST)) {
-=======
-  if(!empty($_POST)) {
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
     $filterBid = $_POST['filterBid'];
     if($filterBid != "all"){
       $qry = "WHERE a.bid_id = '$filterBid'";
     }
   }
-<<<<<<< HEAD
 */
 if(isset($_POST['progSearch']))
 {
@@ -70,8 +57,6 @@ if(isset($_POST['progSearch']))
     }
   }
 }
-=======
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
 
   if($bidang != '1')
   {
@@ -143,26 +128,7 @@ if(isset($_POST['progSearch']))
                   <table cellpadding="5" cellspacing="5"width="100%">
                     <tr>
                       <td>
-<<<<<<< HEAD
                           <? echo selectBid($bidang);?> &nbsp;
-=======
-                          Bidang : <select class="form-control-sm" id="filterBid" name="filterBid">
-                              <option value="">- Bidang  -</option>
-                              <option value="all">- SEMUA  -</option>
-                              <?php
-                              $get_bid = "SELECT * FROM tbl_bidang $fBid ORDER BY bid_id";
-                              $query = mysqli_query($conn,$get_bid);
-                              while ($row = mysqli_fetch_array($query)) 
-                              {
-                              ?>
-                                  <option value="<?php echo $row['bid_id']; ?>">
-                                      <?php echo $row['bid_nama']; ?>
-                                  </option>
-                              <?php
-                              }
-                              ?>
-                          </select>&nbsp;
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
                           <input type="submit" class="btn btn-primary btn-sm" name="progSearch" value="Submit">
                       </td>
                     </tr>
@@ -188,10 +154,7 @@ if(isset($_POST['progSearch']))
                         <th>Uraian</th>
                         <th>Keterangan</th>
                         <th>Pengeluaran</th>
-<<<<<<< HEAD
                         <th>Saldo</th>
-=======
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
                         <th style="text-align:center;">Aksi</th>
                     </tr>
                     </thead>
@@ -199,7 +162,6 @@ if(isset($_POST['progSearch']))
                       <?php
                             $i= 0;
                             $get_trans = "SELECT 
-<<<<<<< HEAD
                                             a.*,
                                             b.*,
                                             c.*,
@@ -212,30 +174,6 @@ if(isset($_POST['progSearch']))
                                           LEFT JOIN tbl_user d ON a.usr_id = d.usr_id
                                           $qry 
                                         ORDER BY a.bln_id DESC";
-=======
-                                            a.trans_id,
-                                            a.trans_tgl,
-                                            b.div_nama,
-                                            c.bid_nama,
-                                            d.usr_nama,
-                                            e.detkeg_nama,
-                                            e.detkeg_jenis,
-                                            e.detkeg_tempat,
-                                            e.bln_id,
-                                            e.thn_desc,
-                                            e.detkeg_urai,
-                                            e.detkeg_ket,
-                                            f.detkeu_nom
-                                        FROM 
-                                            tbl_transaksi a 
-                                          LEFT JOIN tbl_divisi b ON a.div_id = b.div_id
-                                          LEFT JOIN tbl_bidang c ON a.bid_id = c.bid_id
-                                          LEFT JOIN tbl_user d ON a.usr_id = d.usr_id
-                                          LEFT JOIN tbl_detkeg e ON a.trans_id = e.trans_id
-                                          LEFT JOIN tbl_detkeu f ON e.detkeg_id = f.detkeg_id
-                                          $qry
-                                        ORDER BY e.bln_id DESC, a.trans_tgl ASC";
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
                                         //echo $get_trans;
                             $exec_trans = mysqli_query($conn,$get_trans);
                             if(mysqli_num_rows($exec_trans) > 0) 
@@ -259,18 +197,13 @@ if(isset($_POST['progSearch']))
                                     $exec_thn   = mysqli_query($conn,$get_thn);
                                     $row_thn    = mysqli_fetch_array($exec_thn,MYSQLI_ASSOC);
                                     $thn        = $row_thn['thn_desc'];
-<<<<<<< HEAD
                                     //$tgl_keg    = new DateTime($row['trans_tgl']);
-=======
-                                    $tgl_keg    = new DateTime($row['trans_tgl']);
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
                                     
                                     ?>
                                     <tr style="vertical-align: middle;">
                                         <td><input type="checkbox"></td>
                                         <td><?php echo $i;?>.</td>
                                         <td><?php echo $row['bid_nama'];?></td>
-<<<<<<< HEAD
                                         <td><?php echo $row['real_nama'];?></td>
                                         <td><?php echo $row['real_jenis'];?></td>
                                         <td><?php echo $row['real_tempt'];?></td>
@@ -286,24 +219,6 @@ if(isset($_POST['progSearch']))
                                     </tr>
                                     <?
                                     echo modalViewLap($transId);
-=======
-                                        <td><?php echo $row['detkeg_nama'];?></td>
-                                        <td><?php echo $row['detkeg_jenis'];?></td>
-                                        <td><?php echo $row['detkeg_tempat'];?></td>
-                                        <td><?php echo $row['detkeg_urai'];?></td>
-                                        <td><?php echo $row['detkeg_ket'];?></td>
-                                        <td align="right"><?php echo split2curr($row['detkeu_nom']);?></td>
-                                        <td style="text-align:right;">
-                                            <!-- <input type="hidden" name="transid" id="transid" value=""> -->
-                                            <a class="btn" data-toggle="modal" data-target="#viewKegiatan<? echo $transId;?>" ><span class="fa fa-eye"></span></a>
-                                             <a class="btn" data-toggle="modal" data-target="#delKegiatan<? echo $transId;?>"><span class="fa fa-trash"></span></a>
-                                            <a class="btn" href="#"><span class="fa fa-refresh"></span></a>
-                                        </td>
-                                    </tr>
-                                    <?
-                                    echo modalViewKeg($transId);
-                                    echo modalDelKeg($transId);  
->>>>>>> 69c79c549443f6d70868c73eab2f01f170cf3cb1
                                 }
                             }
                             else
