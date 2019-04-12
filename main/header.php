@@ -5,7 +5,7 @@
     <a href="index.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg">GKP BANDUNG</span>
+      <span class="logo-lg"><strong>GKP BANDUNG</strong></span>
     </a>
 
     <!-- Header Navbar: style can be found in header.less -->

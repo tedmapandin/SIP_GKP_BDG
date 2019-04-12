@@ -3,10 +3,11 @@ function modalInputProg()
 {
   global $conn;
   $user = $_SESSION['username'];
-  $get_user   = "SELECT * FROM tbl_user where usr_nama='$user'";
+  $usr_id = $_SESSION['usr_id'];
+  $get_user   = "SELECT * FROM tbl_user where usr_nama='$user' AND usr_id = '$usr_id'";
   $login    = mysqli_query($conn,$get_user);
   $row = mysqli_fetch_array($login,MYSQLI_ASSOC);
-  
+
   $role = $row['role_id'];
   $ktgdiv =$row['ktgdiv_id'];
   $bidang = $row['bid_id'];
@@ -114,7 +115,7 @@ function modalInputProg()
                       <br/>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-primary btn-flat" id="saveProg" name="saveProg">Simpan</button>
+                      <button type="submit" class="btn btn-primary btn-flat" id="saveProg" name="saveProg" >Simpan</button>
                     </div>
             </div>
 </form>
@@ -124,6 +125,17 @@ function modalInputProg()
 function modalEditProg($prog)
 {
 global $conn;
+$user = $_SESSION['username'];
+$usr_id = $_SESSION['usr_id'];
+$get_user   = "SELECT * FROM tbl_user where usr_nama='$user' AND usr_id = '$usr_id'";
+$login    = mysqli_query($conn,$get_user);
+$row = mysqli_fetch_array($login,MYSQLI_ASSOC);
+
+$role = $row['role_id'];
+$ktgdiv =$row['ktgdiv_id'];
+$bidang = $row['bid_id'];
+$divi = $row['div_id'];
+$id_usr = $row['usr_id'];
 ?>
   <div class="modal fade" id="editProgram<? echo $prog;?>" tabindex="-1" role="dialog">
     <form id="prog" class="form-horizontal" method="post" enctype="multipart/form-data">
@@ -143,6 +155,7 @@ global $conn;
                                         c.bid_id,
                                         c.bid_nama,
                                         d.usr_nama,
+                                        d.ktgdiv_id,
                                         e.bln_id,
                                         e.thn_desc,
                                         e.detkeg_nama,
@@ -205,7 +218,7 @@ global $conn;
                       <div class="row" style="width: 100%;padding-left:15px;">
                         <div class="col col-2">Bidang</div>
                         <div>:
-                              <select class="form-control-sm" id="lapBid" name="lapBid">
+                              <select class="form-control-sm" id="filterBid" name="filterBid">
                                   <option value="">- Bidang  -</option>
                                   <?php
                                   $get_bid = "SELECT * FROM tbl_bidang ORDER BY bid_id";
@@ -301,7 +314,18 @@ global $conn;
               </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary btn-flat" id="editProg" name="editProg">Simpan</button>
+                <? if($ktgdiv == "1" || $role == "1")
+                {
+                  ?>
+                    <button type="submit" class="btn btn-info btn-flat" id="aprvProg" name="aprvProg" onclick="return confirm('Program disetujui ?')">Setuju</button>
+                    <button type="submit" class="btn btn-primary btn-flat" id="rejProg" name="rejProg">Tolak</button>
+                  <?
+                } else {
+                  ?>
+                    <button type="submit" class="btn btn-primary btn-flat" id="editProg" name="editProg">Simpan</button>
+                  <?
+                }
+                ?>
             </div>
           </div>
         </div>
@@ -478,6 +502,322 @@ global $conn;
             </form>
           </div>
       </div>
+  </div>
+<?
+}
+
+function displayMJ_view()
+{
+  global $conn;
+  $user = $_SESSION['username'];
+  $usr_id = $_SESSION['usr_id'];
+  $get_user   = "SELECT * FROM tbl_user where usr_nama='$user' AND usr_id = '$usr_id'";
+  $login    = mysqli_query($conn,$get_user);
+  $row = mysqli_fetch_array($login,MYSQLI_ASSOC);
+
+  $role = $row['role_id'];
+  $ktgdiv =$row['ktgdiv_id'];
+  $bidang = $row['bid_id'];
+  $divi = $row['div_id'];
+  $id_usr = $row['usr_id'];
+  ?>
+            <div align="center"><h4><strong>RENCANA PROGRAM KOMISI</strong></h4></div>
+            <div class="box-body">
+              <table id="laptab" class="table table-sm table-striped" style="font-size:12px;">
+                <thead>    
+                <tr align="center">
+                    <th width="10">No.</th>
+                    <th>Divisi</th>
+                    <th>Bidang</th>
+                    <th>Kegiatan</th>
+                    <th>Bulan</th>
+                    <th>Tahun</th>
+                    <th>User</th>
+                    <th>Tanggal Buat</th>
+                    <th style="text-align:center;">Aksi</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <?php
+                        $i= 0;
+                        if(!empty($_POST['filterDiv']))
+                        {
+                          $div = $_POST['filterDiv'];
+                          $qryDiv = " AND a.div_id = '$div'";
+                        } else {
+                           $qryDiv = "";
+                        }
+                        if(!empty($_POST['filterMonth'])){
+                          $Month = $_POST['filterMonth'];
+                          $qryMonth = " AND e.bln_id = '$Month'";
+                        } else {
+                           $qryMonth = "";
+                        }
+                        if(!empty($_POST['filterYear'])){
+                          $Year = $_POST['filterYear'];
+                          $qryYear = " AND e.thn_desc = '$Year'";
+                        } else {
+                           $qryYear = "";
+                        }
+                        $get_trans = "SELECT 
+                                        a.trans_id,
+                                        a.trans_tgl,
+                                        b.div_nama,
+                                        c.bid_nama,
+                                        d.usr_nama,
+                                        e.bln_id,
+                                        e.thn_desc,
+                                        e.detkeg_nama,
+                                        a.trans_stat
+                                    FROM 
+                                        tbl_transaksi a 
+                                      LEFT JOIN tbl_divisi b ON a.div_id = b.div_id
+                                      LEFT JOIN tbl_bidang c ON a.bid_id = c.bid_id
+                                      LEFT JOIN tbl_user d ON a.usr_id = d.usr_id
+                                      LEFT JOIN tbl_detkeg e ON a.trans_id = e.trans_id 
+                                      WHERE 1=1 $qryDiv $qryMonth $qryYear
+                                      ORDER BY e.bln_id DESC, a.trans_tgl ASC"; 
+                        //echo $get_trans;
+                        $exec_trans = mysqli_query($conn,$get_trans);
+                        if(mysqli_num_rows($exec_trans) > 0) 
+                        {
+                            while($row=mysqli_fetch_array($exec_trans,MYSQLI_ASSOC))
+                            {
+                                
+                                $i++;
+                                $progId    = $row['trans_id'];
+                                $transStat = $row['trans_stat'];
+                                //echo $progId;
+                                //query nama bulan
+                                $bulan      = $row['bln_id'];
+                                $get_bln    = "SELECT * FROM tbl_bulan WHERE bln_id = '$bulan'";
+                                $exec_bln   = mysqli_query($conn,$get_bln);
+                                $row_bln    = mysqli_fetch_array($exec_bln,MYSQLI_ASSOC);
+                                $bln        = $row_bln['bln_name'];
+
+                                //query tahun
+                                $tahun      = $row['thn_desc'];
+                                $get_thn    = "SELECT * FROM tbl_tahun WHERE thn_desc = '$tahun'";
+                                $exec_thn   = mysqli_query($conn,$get_thn);
+                                $row_thn    = mysqli_fetch_array($exec_thn,MYSQLI_ASSOC);
+                                $thn        = $row_thn['thn_desc'];
+                                $tgl_keg    = new DateTime($row['trans_tgl']);
+                                
+                                ?>
+                                <tr>
+                                    <td><?php echo $i;?>.</td>
+                                    <td><?php echo $row['div_nama'];?></td>
+                                    <td><?php echo $row['bid_nama'];?></td>
+                                    <td><?php echo $row['detkeg_nama'];?></td>
+                                    <td align="center"><?php echo $bln;?></td>
+                                    <td align="center"><?php echo $thn;?></td>
+                                    <td align="right"><?php echo $row['usr_nama']?></td>
+                                    <td align="center"><?php echo date_format($tgl_keg,"Y/m/d");?></td>
+                                    <td style="text-align:right;">
+                                        <input type="hidden" name="progid" id="progid" value="<? echo $progId;?>">
+                                        <?if($ktgdiv == "1") 
+                                        { 
+                                            if($transStat == "1") 
+                                            { 
+                                              ?>
+                                                <a class="btn" data-toggle="modal" data-target="#editProgram<? echo $progId;?>"><span class="badge badge-info">review</span></a>
+                                              <? 
+                                            } 
+                                            else if ($transStat == "3")
+                                            { 
+                                            ?>
+                                                <a class="btn" data-toggle="modal" data-target="#viewProgram<? echo $progId;?>"><span class="badge badge-success">disetujui</span>
+                                            <?
+                                            }
+                                             else if ($transStat == "4")
+                                            { 
+                                            ?>
+                                                <a class="btn" data-toggle="modal" data-target="#viewProgram<? echo $progId;?>"><span class="badge badge-danger">ditolak</span>
+                                            <?
+                                            } 
+                                        } 
+                                        ?>
+                                        <!-- <a class="btn" data-toggle="modal" data-target="#delProgram<? //echo $progId;?>"><span class="fa fa-trash"></span></a> -->
+                                        <a class="btn" href="<? refresh();?>"><span class="fa fa-refresh"></span></a>
+                                    </td>
+                                </tr>                                
+                              <?  
+                                echo modalViewProg($progId);
+                                echo modalEditProg($progId);
+                                echo modalDelProg($progId);
+                            }
+                        }
+                        else
+                        {
+                            ?>
+                            <tr>
+                               <td colspan="8"><?php echo "Belum ada laporan";?></td> 
+                            </tr>
+                            <?php
+                        }
+                  ?> 
+                </tbody>
+              </table>
+            </div>
+<?
+}
+function displayView()
+{
+  global $conn;
+  $user = $_SESSION['username'];
+  $usr_id = $_SESSION['usr_id'];
+  $get_user   = "SELECT * FROM tbl_user where usr_nama='$user' AND usr_id = '$usr_id'";
+  $login    = mysqli_query($conn,$get_user);
+  $row = mysqli_fetch_array($login,MYSQLI_ASSOC);
+
+  $role = $row['role_id'];
+  $ktgdiv =$row['ktgdiv_id'];
+  $bidang = $row['bid_id'];
+  $divi = $row['div_id'];
+  $id_usr = $row['usr_id'];
+    $filt="";
+  if($ktgdiv != '1' || $ktgdiv != '3')
+  {
+      if($bidang != '1')
+      {
+        $filt = " WHERE a.div_id = '$divi' AND a.bid_id = '$bidang'";
+      }
+      else
+      {
+        $filt = " WHERE a.div_id = '$divi'";
+      }
+  }
+  else
+  {
+    $filt = "WHERE a.trans_stat = '1'";
+  }
+?>
+  <div align="center"><h4><strong>RENCANA PROGRAM</strong></h4></div>
+  <div class="box-body">
+    <table id="laptab" class="table table-sm table-striped" style="font-size:12px;">
+      <thead>    
+      <tr align="center">
+          <th width="10">No.</th>
+          <th>Bidang</th>
+          <th>Kegiatan</th>
+          <th>Bulan</th>
+          <th>Tahun</th>
+          <th>User</th>
+          <th>Tanggal Buat</th>
+          <th style="text-align:center;">Aksi</th>
+      </tr>
+      </thead>
+      <tbody>
+        <?php
+              $i= 0;
+              if(!empty($_POST['filterMonth'])){
+                $Month = $_POST['selectMonth'];
+                $qryMonth = " AND e.bln_id = '$Month'";
+              } else {
+                 $qryMonth = "";
+              }
+              if(!empty($_POST['filterYear'])){
+                $Year = $_POST['filterYear'];
+                $qryYear = " AND e.bln_id = '$Year'";
+              } else {
+                 $qryYear = "";
+              }
+              $get_trans = "SELECT 
+                              a.trans_id,
+                              a.trans_tgl,
+                              b.div_nama,
+                              c.bid_nama,
+                              d.usr_nama,
+                              e.bln_id,
+                              e.thn_desc,
+                              e.detkeg_nama,
+                              a.trans_stat
+                          FROM 
+                              tbl_transaksi a 
+                            LEFT JOIN tbl_divisi b ON a.div_id = b.div_id
+                            LEFT JOIN tbl_bidang c ON a.bid_id = c.bid_id
+                            LEFT JOIN tbl_user d ON a.usr_id = d.usr_id
+                            LEFT JOIN tbl_detkeg e ON a.trans_id = e.trans_id
+                            $filt $qryMonth $qryYear
+                            ORDER BY e.bln_id DESC, a.trans_tgl ASC"; 
+              //echo $get_trans;
+              $exec_trans = mysqli_query($conn,$get_trans);
+              if(mysqli_num_rows($exec_trans) > 0) 
+              {
+                  while($row=mysqli_fetch_array($exec_trans,MYSQLI_ASSOC))
+                  {
+                      
+                      $i++;
+                      $progId    = $row['trans_id'];
+                      $transStat = $row['trans_stat'];
+                      //echo $progId;
+                      //query nama bulan
+                      $bulan      = $row['bln_id'];
+                      $get_bln    = "SELECT * FROM tbl_bulan WHERE bln_id = '$bulan'";
+                      $exec_bln   = mysqli_query($conn,$get_bln);
+                      $row_bln    = mysqli_fetch_array($exec_bln,MYSQLI_ASSOC);
+                      $bln        = $row_bln['bln_name'];
+
+                      //query tahun
+                      $tahun      = $row['thn_desc'];
+                      $get_thn    = "SELECT * FROM tbl_tahun WHERE thn_desc = '$tahun'";
+                      $exec_thn   = mysqli_query($conn,$get_thn);
+                      $row_thn    = mysqli_fetch_array($exec_thn,MYSQLI_ASSOC);
+                      $thn        = $row_thn['thn_desc'];
+                      $tgl_keg    = new DateTime($row['trans_tgl']);
+                      
+                      ?>
+                      <tr>
+                          <td><?php echo $i;?>.</td>
+                          <td><?php echo $row['bid_nama'];?></td>
+                          <td><?php echo $row['detkeg_nama'];?></td>
+                          <td align="center"><?php echo $bln;?></td>
+                          <td align="center"><?php echo $thn;?></td>
+                          <td align="right"><?php echo $row['usr_nama']?></td>
+                          <td align="center"><?php echo date_format($tgl_keg,"Y/m/d");?></td>
+                          <td style="text-align:right;">
+                              <input type="hidden" name="progid" id="progid" value="<? echo $progId;?>">
+                              <?
+                                  if($transStat == "1") 
+                                  { 
+                                    ?>
+                                      <a class="btn" data-toggle="modal" data-target="#viewProgram<? echo $progId;?>"><span class="badge badge-info">review</span>
+                                    <? 
+                                  } 
+                                  else if ($transStat == "3")
+                                  { 
+                                  ?>
+                                      <a class="btn" data-toggle="modal" data-target="#viewProgram<? echo $progId;?>"><span class="badge badge-success">disetujui</span>
+                                  <?
+                                  }
+                                   else if ($transStat == "4")
+                                  { 
+                                  ?>
+                                      <a class="btn" data-toggle="modal" data-target="#viewProgram<? echo $progId;?>"><span class="badge badge-danger">ditolak</span>
+                                  <?
+                                  }
+                               ?>
+                              <!-- <a class="btn" data-toggle="modal" data-target="#delProgram<? //echo $progId;?>"><span class="fa fa-trash"></span></a> -->
+                              <a class="btn" href="<? refresh();?>"><span class="fa fa-refresh"></span></a>
+                          </td>
+                      </tr>                                
+                    <?  
+                      echo modalViewProg($progId);
+                      echo modalEditProg($progId);
+                      echo modalDelProg($progId);
+                  }
+              }
+              else
+              {
+                  ?>
+                  <tr>
+                     <td colspan="8"><?php echo "Belum ada laporan";?></td> 
+                  </tr>
+                  <?php
+              }
+        ?> 
+      </tbody>
+    </table>
   </div>
 <?
 }

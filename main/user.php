@@ -66,17 +66,8 @@
           $div= clean($_POST["divisi"]);
       }
 
-      if (empty($_POST["bid"])) {
-          $error[] = "Silahkan Pilih Bidang";
-      } else {
-          $bid= clean($_POST["bid"]);
-      }
-
-      if (empty($_POST["jab"])) {
-          $error[] = "Silahkan Pilih Jabatan";
-      } else {
-          $jab = clean($_POST["jab"]);
-      }
+      $bid= clean($_POST["bid"]);
+      $jab = clean($_POST["jab"]);
 
       if (empty($_POST["xusername"])) {
           $error[] = "Silahkan Masukan Username";
@@ -136,7 +127,7 @@
   if (!empty($_POST["user_id"])) {
         $uuserid = clean($_POST["user_id"]);
     }
-    echo $uuserid;
+    //echo $uuserid;
   if ($_SERVER["REQUEST_METHOD"] == "POST") 
   {
       if (empty($_POST["unama"])) {

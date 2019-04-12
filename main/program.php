@@ -1,9 +1,9 @@
 <?php 
   session_start();
 
-  error_reporting(E_ALL); 
+ /* error_reporting(E_ALL); 
   ini_set('display_errors', TRUE); 
-  ini_set('display_startup_errors', TRUE); 
+  ini_set('display_startup_errors', TRUE); */
 
   include("../conn/conn.php");
   include("../control/functions.php");
@@ -35,11 +35,11 @@
   {
       if($bidang != '1')
       {
-        $filt = "WHERE a.div_id = '$divi' AND a.bid_id = '$bidang' and a.trans_stat = '1'";
+        $filt = " WHERE a.div_id = '$divi' AND a.bid_id = '$bidang'";
       }
       else
       {
-        $filt = "WHERE a.div_id = '$divi' and a.trans_stat = '1'";
+        $filt = " WHERE a.div_id = '$divi'";
       }
   }
   else
@@ -50,7 +50,7 @@
  $bidLap=$blnLap=$thnLap=$nama_keg=$jenis_keg=$tgl_keg=$tmp_keg=$urai_keg=$ket_keg=$tgl_keu=$ket_keu=$nom_keu="";
   $errorLap=array();
 
-  if ($_SERVER["REQUEST_METHOD"] == "POST") 
+  if ($_SERVER["REQUEST_METHOD"] == "POST"  && (isset($_POST['aprvProg']) || isset($_POST['rejProg']) || isset($_POST['saveProg']))) 
   {
       if(!empty($_POST['progid']))
       {
@@ -105,6 +105,12 @@
       }else {
           $nom_keu = clean($_POST['nom_keu']);
       }
+
+      foreach($errorLap as $key=>$value)
+      {
+        echo '<div class="alert alert-warning">'.$value.'</div>';
+      }
+
       if(isset($_POST['saveProg']) && count($errorLap) < 1)
       {
           $sql = "INSERT INTO tbl_transaksi (div_id,bid_id,usr_id,trans_stat)VALUES ('$divi','$bidLap','$id_usr',1)";
@@ -139,12 +145,23 @@
           //header("location:http://localhost/SIP_GKP_BDG/main/program.php");
       }
 
-      if(isset($_POST['editProg']) && count($errorLap) < 1)
+      if(count($errorLap) < 1)
       {
+         if(isset($_POST['aprvProg']))
+         {
+            $stat    = '3';
+            $qryStat = " ,trans_stat = '$stat'";
+         }
+         if(isset($_POST['rejProg']))
+         {
+            $stat    = '4';
+            $qryStat = " ,trans_stat = '$stat'";
+         }
+
           $sql = "UPDATE 
                     tbl_transaksi 
                   SET 
-                    bid_id='$bidLap',usr_id='$id_usr' 
+                    bid_id='$bidLap',usr_id='$id_usr' $qryStat
                   WHERE trans_id='$id_trans'";
           //echo $sql.'<br/>';
           $exec = mysqli_query($conn,$sql);
@@ -173,6 +190,9 @@
           {
               echo "Error: " . $sqlkeg . "<br>" . $conn->error;
           }
+          else if ($execkeg === TRUE) {
+            
+          }
 
           $sqlkeu ="UPDATE
                       tbl_detkeu
@@ -185,8 +205,13 @@
           if ($execkeu !== TRUE) 
           {
               echo "Error: " . $sqlkeu . "<br>" . $conn->error;
-          }
-          //header("location:http://localhost/SIP_GKP_BDG/main/program.php");
+          }/* else if($execkeu === TRUE) 
+
+
+          /*if($execkeg === TRUE && $execkeu === TRUE)
+          {
+            header("location:http://localhost/SIP_GKP_BDG/main/program.php");
+          }*/
       }
   }
 
@@ -225,7 +250,7 @@
   <script src="../assets/jquery.form.js"></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-<form method="post" action="?">
+<form method="post" action="">
 <div class="wrapper">
 
   <!--Header-->
@@ -248,36 +273,67 @@
     <section class="content" style="width: 100%;">
         <div class="col-xs-12">
           <div class="box">
-            <table width="100%">
-              <tr>
-                <td>
-                    <div class="box-header">
-                    <a class="btn btn-success btn-flat" data-toggle="modal" data-target="#addProgram"><span class="fa fa-plus-square-o"></span> Program Baru</a>
-                    </div>
-                </td>
-              </tr>
-            </table>
+            <?if($ktgdiv != '1'){?>
+              <table width="100%" cellspacing="5"width="100%" border="1">
+                <tr>
+                  <td>
+                      <div class="box-header">
+                      <a class="btn btn-success btn-flat" data-toggle="modal" data-target="#addProgram"><span class="fa fa-plus-square-o"></span> Program Baru</a>
+                      </div>
+                  </td>
+                  <td width="180">
+                      <? selectMonth();?> &nbsp;
+                  </td>
+                  <td width="150">
+                      <? selectYear();?> &nbsp;
+                  </td>
+                  <td align="left">
+                    <input type="submit" class="btn btn-primary btn-sm" name="prog"  id="prog" value="FILTER">
+                  </td>
+                </tr>
+              </table>
+
+            <? } else if ($ktgdiv == '1') 
+            {
+              ?>
+              <div class="form-group" style="width: 100%;">
+                  <table cellpadding="5" cellspacing="5"width="100%" border="0">
+                    <tr>
+                      <td width="250">
+
+                          <? selectDiv();?> &nbsp;
+                      </td>
+                      <td width="180">
+                          <? selectMonth();?> &nbsp;
+                      </td>
+                      <td width="150">
+                          <? selectYear();?> &nbsp;
+                      </td>
+                      <td align="left">
+                        <input type="submit" class="btn btn-primary btn-sm" name="prog" id="progMJ" value="FILTER">
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+            <? } ?>
            
             <!-- /.box-header -->
             <?
-            if(isset($_POST['saveLap']))
+            if(isset($_POST['saveLap'])) 
             {
-                if(count($errorLap) > 0) 
-                { 
+                if(count($errorLap) > 0)  { 
                 ?>
                     <div class="alert alert-danger" role="alert">
                 <?
-                    foreach($errorLap as $value) 
-                    {
-                        echo $value."<br/>";
+                    foreach($errorLap as $value){
+                      echo $value."<br/>";
                     };
                 };
                 ?>
                     </div>
                 <?
 
-                if(count($errorLap) < 1) 
-                {
+                if(count($errorLap) < 1) {
                 ?>
                     <div class="alert alert-success" role="alert">
                       Sukses.
@@ -285,107 +341,11 @@
                 <?  
                 }
             }
-            ?>
-            <div align="center"><h4><strong>RENCANA PROGRAM</strong></h4></div>
-            <div class="box-body">
-              <table id="laptab" class="table table-sm table-striped" style="font-size:12px;">
-                <thead>    
-                <tr align="center">
-                    <th width="10">No.</th>
-                    <? if($role==1) { ?>
-                      <th>Divisi</th>
-                    <? }?>
-                    <th>Bidang</th>
-                    <th>Kegiatan</th>
-                    <th>Bulan</th>
-                    <th>Tahun</th>
-                    <th>User</th>
-                    <th>Tanggal Buat</th>
-                    <th style="text-align:center;">Aksi</th>
-                </tr>
-                </thead>
-                <tbody>
-                  <?php
-                        $i= 0;
-                        $get_trans = "SELECT 
-                                        a.trans_id,
-                                        a.trans_tgl,
-                                        b.div_nama,
-                                        c.bid_nama,
-                                        d.usr_nama,
-                                        e.bln_id,
-                                        e.thn_desc,
-                                        e.detkeg_nama
-                                    FROM 
-                                        tbl_transaksi a 
-                                      LEFT JOIN tbl_divisi b ON a.div_id = b.div_id
-                                      LEFT JOIN tbl_bidang c ON a.bid_id = c.bid_id
-                                      LEFT JOIN tbl_user d ON a.usr_id = d.usr_id
-                                      LEFT JOIN tbl_detkeg e ON a.trans_id = e.trans_id $filt
-                                    ORDER BY e.bln_id DESC, a.trans_tgl ASC";
-                                    //echo $get_trans;
-                        $exec_trans = mysqli_query($conn,$get_trans);
-                        if(mysqli_num_rows($exec_trans) > 0) 
-                        {
-                            while($row=mysqli_fetch_array($exec_trans,MYSQLI_ASSOC))
-                            {
-                                
-                                $i++;
-                                $progId    = $row['trans_id'];
-                                //echo $progId;
-                                //query nama bulan
-                                $bulan      = $row['bln_id'];
-                                $get_bln    = "SELECT * FROM tbl_bulan WHERE bln_id = '$bulan'";
-                                $exec_bln   = mysqli_query($conn,$get_bln);
-                                $row_bln    = mysqli_fetch_array($exec_bln,MYSQLI_ASSOC);
-                                $bln        = $row_bln['bln_name'];
 
-                                //query tahun
-                                $tahun      = $row['thn_desc'];
-                                $get_thn    = "SELECT * FROM tbl_tahun WHERE thn_desc = '$tahun'";
-                                $exec_thn   = mysqli_query($conn,$get_thn);
-                                $row_thn    = mysqli_fetch_array($exec_thn,MYSQLI_ASSOC);
-                                $thn        = $row_thn['thn_desc'];
-                                $tgl_keg    = new DateTime($row['trans_tgl']);
-                                
-                                ?>
-                                <tr>
-                                    <td><?php echo $i;?>.</td>
-                                    <? if($role==1) { ?>
-                                      <td><?php echo $row['div_nama'];?></td>
-                                    <? }?>
-                                    <td><?php echo $row['bid_nama'];?></td>
-                                    <td><?php echo $row['detkeg_nama'];?></td>
-                                    <td align="center"><?php echo $bln;?></td>
-                                    <td align="center"><?php echo $thn;?></td>
-                                    <td align="right"><?php echo $row['usr_nama']?></td>
-                                    <td align="center"><?php echo date_format($tgl_keg,"Y/m/d");?></td>
-                                    <td style="text-align:right;">
-                                        <input type="hidden" name="progid" id="progid" value="<? echo $progId;?>">
-                                        <a class="btn" data-toggle="modal" data-target="#viewProgram<? echo $progId;?>"><span class="fa fa-eye"></span></a>
-                                        <a class="btn" data-toggle="modal" data-target="#editProgram<? echo $progId;?>"><span class="fa fa-pencil"></span></a>
-                                        <a class="btn" data-toggle="modal" data-target="#delProgram<? echo $progId;?>"><span class="fa fa-trash"></span></a>
-                                        <a class="btn" href="<? refresh();?>"><span class="fa fa-refresh"></span></a>
-                                    </td>
-                                </tr>                                
-                              <?  
-                                echo modalViewProg($progId);
-                                echo modalEditProg($progId);
-                                echo modalDelProg($progId);
-                            }
-                        }
-                        else
-                        {
-                            ?>
-                            <tr>
-                               <td colspan="8"><?php echo "Belum ada laporan";?></td> 
-                            </tr>
-                            <?php
-                        }
-                  ?> 
-                </tbody>
-              </table>
-            </div>
+
+                echo displayMJ_view();
+                //displayMJ_view();
+            ?>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
@@ -403,8 +363,6 @@
 <div class="modal fade" id="addProgram" tabindex="-1" role="dialog">
   <? echo modalInputProg(); ?>
 </div>
-
-
 <!-- ./wrapper -->
 <script type="text/javascript">
   $(document).ready(function(){
@@ -427,7 +385,6 @@
     });
 });
 </script>
-
 </form>
 </body>
 </html>

@@ -100,7 +100,7 @@ if(isset($_POST['progSearch']))
     $filterBid = $_POST['filterBid'];
     if($filterBid != "all")
     {
-      $filter = "WHERE a.bid_id=$filterBid";
+      $filter = "WHERE a.bid_id= '$filterBid'";
     }
     else
     {
@@ -229,7 +229,7 @@ if($bidang != '1')
                                           LEFT JOIN tbl_detkeu f ON e.detkeg_id = f.detkeg_id
                                          $filter
                                         ORDER BY e.bln_id DESC, a.trans_tgl ASC";
-                                        //echo $get_trans;
+                                        echo $get_trans;
                             $exec_trans = mysqli_query($conn,$get_trans);
                             if(mysqli_num_rows($exec_trans) > 0) 
                             {

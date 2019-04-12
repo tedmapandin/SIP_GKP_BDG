@@ -4,6 +4,70 @@ function clean($text)
   return $text;
 }
 
+function selectYear()
+{
+  global $conn;
+  ?>
+   Tahun : <select class="form-control-sm" id="filterYear" name="filterYear">
+              <?php
+                $today_year = date('Y');
+                $get_thn = "SELECT * FROM tbl_tahun ORDER BY thn_id";
+                $query = mysqli_query($conn,$get_thn);
+                while ($row = mysqli_fetch_array($query)) 
+                {
+                ?>
+                    <option value="<?php echo $row['thn_desc']; ?>" <?if($row['thn_desc'] == $today_year) { echo "selected";}?>>
+                        <?php echo $row['thn_desc']; ?>
+                    </option>
+                <?php
+                }
+                ?>
+            </select>&nbsp;
+  <?
+}
+
+function selectMonth()
+{
+  global $conn;
+  ?>
+   Bulan : <select class="form-control-sm" id="filterMonth" name="filterMonth">
+              <?php
+                $today_month = date('m');
+                $get_bln = "SELECT * FROM tbl_bulan ORDER BY bln_id";
+                $query = mysqli_query($conn,$get_bln);
+                while ($row = mysqli_fetch_array($query)) 
+                {
+                ?>
+                    <option value="<?php echo $row['bln_id']; ?>" <?if($row['bln_id'] == $today_month) { echo "selected";}?>>
+                        <?php echo $row['bln_name']; ?>
+                    </option>
+                <?php
+                }
+                ?>
+            </select>&nbsp;
+  <?
+}
+function selectDiv()
+{
+  global $conn;
+  ?>
+   Divisi : <select class="form-control-sm" id="filterDiv" name="filterDiv">
+              <option value="">- Divisi  -</option>
+              <?php
+              $get_div = "SELECT * FROM tbl_divisi WHERE ktgdiv_id = '2' ORDER BY div_id";
+              $query = mysqli_query($conn,$get_div);
+              while ($row = mysqli_fetch_array($query)) 
+              {
+              ?>
+                  <option value="<?php echo $row['div_id']; ?>">
+                      <?php echo $row['div_nama']; ?>
+                  </option>
+              <?php
+              }
+              ?>
+            </select>&nbsp;
+  <?
+}
 function selectBid($bid)
 {
   global $conn;
@@ -194,6 +258,7 @@ function sidebar()
               <li><a href="../main/tahun.php"><i class="fa fa-calendar"></i> Tahun</a></li>
             </ul>
           </li>
+          <?php } ?>
           <li class="treeview">
             <a href="#">
               <i class="fa fa-gears"></i>
@@ -206,7 +271,6 @@ function sidebar()
               <li><a href="../main/program.php"><i class="fa fa-list"></i> Program Baru </a></li>
             </ul>
           </li>
-        <?php } ?>
          <li>
           <a href="../main/transaksi.php">
             <i class="fa fa-sign-out"></i> <span>Transaksi</span>
@@ -303,6 +367,7 @@ function sidebarIdx()
               <li><a href="../SIP_GKP_BDG/main/tahun.php"><i class="fa fa-calendar"></i> Tahun</a></li>
             </ul>
           </li>
+        <?php } ?>
            <li class="treeview">
             <a href="#">
               <i class="fa fa-gears"></i>
@@ -315,7 +380,6 @@ function sidebarIdx()
               <li><a href="../SIP_GKP_BDG/main/program.php"><i class="fa fa-list"></i> Program Baru </a></li>
             </ul>
           </li>
-        <?php } ?>
          <li>
           <a href="../SIP_GKP_BDG/main/transaksi.php">
             <i class="fa fa-sign-out"></i> <span>Transaksi</span>
