@@ -274,7 +274,7 @@
         <div class="col-xs-12">
           <div class="box">
             <?if($ktgdiv != '1'){?>
-              <table width="100%" cellspacing="5"width="100%" border="1">
+              <table width="100%" cellspacing="5"width="100%" border="0">
                 <tr>
                   <td>
                       <div class="box-header">

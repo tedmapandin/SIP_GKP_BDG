@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 25, 2019 at 04:00 AM
+-- Generation Time: Apr 12, 2019 at 04:57 AM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.23
 
@@ -98,7 +98,10 @@ CREATE TABLE `tbl_detkeg` (
 
 INSERT INTO `tbl_detkeg` (`trans_id`, `detkeg_id`, `bln_id`, `thn_desc`, `detkeg_nama`, `detkeg_jenis`, `detkeg_urai`, `detkeg_ket`, `detkeg_tgl`, `detkeg_tempat`, `detkeg_stat`) VALUES
 (32, 34, 4, 2019, 'Bonti Youth Service', 'Kebaktian', 'Kebaktian Pemuda', 'Kebaktian Pemuda', '0000-00-00', 'GSG GKP Bandung', 0),
-(33, 35, 4, 2019, 'G2C - Gerak Gerik Ceria', 'Olahraga', 'Olahraga kaum Muda', 'Olahraga kaum Muda', '0000-00-00', 'Gor Situ Aksan', 0);
+(33, 35, 4, 2019, 'G2C - Gerak Gerik Ceria', 'Olahraga', 'Olahraga kaum Muda', 'Olahraga kaum Muda', '0000-00-00', 'GSG GKP Bandung', 0),
+(34, 36, 4, 2019, 'Bersih-bersih Studio', 'Maintenance', '- Membersihkan ruang studio\r\n- Mengganti part yang rusak\r\n- Membersihkan Instrumen', 'Dilaksanakan 1 bulan 1x', '0000-00-00', 'Studio GKP Bandung', 0),
+(35, 37, 4, 2019, 'Kunjungan Pemuda', 'Visitasi', '- Membangun relasi \r\n- Bertukar pikiran pelayanan pemuda', 'dilaksanakan 3 bulan sekali', '0000-00-00', 'GKP Cimahi', 0),
+(36, 38, 5, 2019, 'T4C (Teens For Christ)', 'Persekutuan Remaja', 'Persekutuan Remaja', 'Setiap Hari Sabtu', '0000-00-00', 'Ruang Tiranus', 0);
 
 -- --------------------------------------------------------
 
@@ -122,7 +125,10 @@ CREATE TABLE `tbl_detkeu` (
 
 INSERT INTO `tbl_detkeu` (`detkeu_id`, `detkeg_id`, `detkeu_tgl_trans`, `detkeu_desc`, `detkeu_nom`, `detkeu_realisasi`, `detkeu_bukti`) VALUES
 (29, 34, NULL, NULL, '1500000.00', NULL, NULL),
-(30, 35, NULL, NULL, '500000.00', NULL, NULL);
+(30, 35, NULL, NULL, '500000.00', NULL, NULL),
+(31, 36, NULL, NULL, '500000.00', NULL, NULL),
+(32, 37, NULL, NULL, '1000000.00', NULL, NULL),
+(33, 38, NULL, NULL, '200000.00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -342,8 +348,11 @@ CREATE TABLE `tbl_transaksi` (
 --
 
 INSERT INTO `tbl_transaksi` (`trans_id`, `div_id`, `bid_id`, `usr_id`, `trans_tgl`, `update_tgl`, `trans_stat`) VALUES
-(32, 5, 2, 1, '2019-03-25 02:41:15', '2019-03-25 09:41:15', 2),
-(33, 5, 3, 1, '2019-03-25 02:47:28', '2019-03-25 09:47:28', 1);
+(32, 5, 2, 15, '2019-03-25 02:41:15', '2019-03-25 09:41:15', 4),
+(33, 5, 3, 15, '2019-03-25 02:47:28', '2019-03-25 09:47:28', 3),
+(34, 5, 5, 15, '2019-04-10 13:21:54', '2019-04-10 20:21:54', 3),
+(35, 5, 3, 1, '2019-04-10 13:29:34', '2019-04-10 20:29:34', 1),
+(36, 4, 2, 16, '2019-04-11 13:32:46', '2019-04-11 20:32:46', 1);
 
 -- --------------------------------------------------------
 
@@ -372,9 +381,11 @@ CREATE TABLE `tbl_user` (
 
 INSERT INTO `tbl_user` (`usr_id`, `role_id`, `ktgdiv_id`, `div_id`, `bid_id`, `jab_id`, `usr_nama`, `usr_pswd`, `usr_name_comp`, `usr_email`, `usr_phone`, `usr_stat`) VALUES
 (1, 1, 2, 5, 1, 1, 'bayukm', '4e4dfe019d649091f230f1dcd5b17101', 'Bayu Kristiadhi Muliasetia', 'bayukristiadhimuliasetia@gmail.com', '081312345678', 1),
-(2, 2, 2, 5, 1, 3, 'vica_r', '0f0a417287f7f0d73ce04e322fee2af2', 'Vica Rianti', 'vicarianti@gmail.com', '087812345678', 1),
+(2, 2, 2, 5, 1, 3, 'vica_r', '0f0a417287f7f0d73ce04e322fee2af2', 'Vica Rianti', 'vicarianti@gmail.com', '087812345678', 0),
 (3, 2, 2, 6, 2, 7, 'cilla', '15ca86843d6964d922ac3910e5f6cfaa', 'Priscila Natasha', 'cilla@gmail.com', '085612345678', 1),
-(13, 2, 2, 7, 5, 8, 'ferdi', '5fc6425c1f58df083f073e6fe9a9091a', 'Ferdian', 'ferdi@gmail.com', '08112345678', 1);
+(13, 2, 2, 7, 5, 8, 'ferdi', '5fc6425c1f58df083f073e6fe9a9091a', 'Ferdian', 'ferdi@gmail.com', '08112345678', 1),
+(15, 2, 1, 2, 0, 0, 'joseph', '6c13dd10d88a7fe70c168842e806b1e8', 'Joseph', 'joseph@gmail.com', '08789874654121', 1),
+(16, 2, 2, 4, 1, 1, 'christiano', 'f02666e2d7cfe8791b5ff9f6361bf88c', 'Christiano', 'Christiano@gmail.com', '02123456789', 1);
 
 --
 -- Indexes for dumped tables
@@ -503,12 +514,12 @@ ALTER TABLE `tbl_bulan`
 -- AUTO_INCREMENT for table `tbl_detkeg`
 --
 ALTER TABLE `tbl_detkeg`
-  MODIFY `detkeg_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `detkeg_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 --
 -- AUTO_INCREMENT for table `tbl_detkeu`
 --
 ALTER TABLE `tbl_detkeu`
-  MODIFY `detkeu_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `detkeu_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT for table `tbl_divisi`
 --
@@ -558,12 +569,12 @@ ALTER TABLE `tbl_tahun`
 -- AUTO_INCREMENT for table `tbl_transaksi`
 --
 ALTER TABLE `tbl_transaksi`
-  MODIFY `trans_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `trans_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT for table `tbl_user`
 --
 ALTER TABLE `tbl_user`
-  MODIFY `usr_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `usr_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- Constraints for dumped tables
 --
@@ -599,9 +610,7 @@ ALTER TABLE `tbl_transaksi`
 -- Constraints for table `tbl_user`
 --
 ALTER TABLE `tbl_user`
-  ADD CONSTRAINT `fk_usr_bid` FOREIGN KEY (`bid_id`) REFERENCES `tbl_bidang` (`bid_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_usr_div` FOREIGN KEY (`div_id`) REFERENCES `tbl_divisi` (`div_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_usr_jab` FOREIGN KEY (`jab_id`) REFERENCES `tbl_jabatan` (`jab_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_usr_ktgdiv` FOREIGN KEY (`ktgdiv_id`) REFERENCES `tbl_ktgdiv` (`ktgdiv_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_usr_role` FOREIGN KEY (`role_id`) REFERENCES `tbl_role` (`role_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
