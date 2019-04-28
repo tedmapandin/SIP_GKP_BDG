@@ -8,6 +8,9 @@
   include("../conn/conn.php");
   include("../control/functions.php");
   include("../control/prog_functions.php");
+  include("../assets/PHPMailer/src/PHPMailer.php");
+  include("../assets/PHPMailer/src/SMTP.php");
+  include("../assets/PHPMailer/src/OAuth.php");
   $title_pg='Program';
 // Program to display complete URL          
 // Display the link 
@@ -143,6 +146,38 @@
               echo "Error: " . $sqlkeu . "<br>" . $conn->error;
           }
           //header("location:http://localhost/SIP_GKP_BDG/main/program.php");
+
+          $mail = new PHPMailer\PHPMailer\PHPMailer();
+
+          $mail = new PHPMailer\PHPMailer\PHPMailer();
+          $mail->IsSMTP(); // enable SMTP
+
+          $mail->SMTPDebug = 1; // debugging: 1 = errors and messages, 2 = messages only
+          $mail->SMTPAuth = true; // authentication enabled
+          $mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for Gmail
+          $mail->Host = "smtp.gmail.com";
+          $mail->Port = 465; // or 587
+          $mail->IsHTML(true);
+          $mail->Username = "tedmapandin@gmail.com";
+          $mail->Password = "100%brave";
+          $mail->SetFrom("tedmapandin@gmail.com");
+          $mail->Subject = "Program Baru";
+          $mail->Body = "Program baru telah diinput. Silahkan Cek SIP";
+          $mail->AddAddress("bayukristiadhimuliasetia@gmail.com");
+
+          if(!$mail->Send()) {
+            echo "Mailer Error: " . $mail->ErrorInfo;
+          } else {
+            echo "Message has been sent";
+          }
+
+          /*if($m->send()) {
+            header('location: http://localhost/SIP_GKP_BDG/main/program.php');
+            die();
+          } else {
+            $errorLap[] = 'Maaf gagal kirim email, silahkan coba lagi';
+          }*/
+
       }
 
       if(count($errorLap) < 1)
@@ -217,6 +252,11 @@
 
   if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delProg']))
   {
+      if(!empty($_POST['progid']))
+      {
+        $id_trans = $_POST['progid'];
+      }
+
       $deleteTrans = "UPDATE tbl_transaksi SET trans_stat=9 WHERE trans_id = '$id_trans'";
       $execDelTrans = mysqli_query($conn,$deleteTrans);
 
@@ -341,10 +381,14 @@
                 <?  
                 }
             }
-
-
+            if($ktgdiv == '1')
+            {
                 echo displayMJ_view();
-                //displayMJ_view();
+            }
+            else if($ktgdiv == '2')
+            {
+              echo displayView();
+            }
             ?>
             <!-- /.box-body -->
           </div>

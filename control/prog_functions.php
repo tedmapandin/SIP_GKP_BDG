@@ -575,7 +575,7 @@ function displayMJ_view()
                                       LEFT JOIN tbl_bidang c ON a.bid_id = c.bid_id
                                       LEFT JOIN tbl_user d ON a.usr_id = d.usr_id
                                       LEFT JOIN tbl_detkeg e ON a.trans_id = e.trans_id 
-                                      WHERE 1=1 $qryDiv $qryMonth $qryYear
+                                      WHERE 1=1 $qryDiv $qryMonth $qryYear AND trans_stat <> '9'
                                       ORDER BY e.bln_id DESC, a.trans_tgl ASC"; 
                         //echo $get_trans;
                         $exec_trans = mysqli_query($conn,$get_trans);
@@ -711,7 +711,7 @@ function displayView()
         <?php
               $i= 0;
               if(!empty($_POST['filterMonth'])){
-                $Month = $_POST['selectMonth'];
+                $Month = $_POST['filterMonth'];
                 $qryMonth = " AND e.bln_id = '$Month'";
               } else {
                  $qryMonth = "";
@@ -738,7 +738,7 @@ function displayView()
                             LEFT JOIN tbl_bidang c ON a.bid_id = c.bid_id
                             LEFT JOIN tbl_user d ON a.usr_id = d.usr_id
                             LEFT JOIN tbl_detkeg e ON a.trans_id = e.trans_id
-                            $filt $qryMonth $qryYear
+                            $filt $qryMonth $qryYear AND trans_stat <> '9'
                             ORDER BY e.bln_id DESC, a.trans_tgl ASC"; 
               //echo $get_trans;
               $exec_trans = mysqli_query($conn,$get_trans);
@@ -766,6 +766,7 @@ function displayView()
                       $thn        = $row_thn['thn_desc'];
                       $tgl_keg    = new DateTime($row['trans_tgl']);
                       
+                      //echo $progId;
                       ?>
                       <tr>
                           <td><?php echo $i;?>.</td>
@@ -797,7 +798,7 @@ function displayView()
                                   <?
                                   }
                                ?>
-                              <!-- <a class="btn" data-toggle="modal" data-target="#delProgram<? //echo $progId;?>"><span class="fa fa-trash"></span></a> -->
+                              <a class="btn" data-toggle="modal" data-target="#delProgram<? echo $progId;?>"><span class="fa fa-trash"></span></a>
                               <a class="btn" href="<? refresh();?>"><span class="fa fa-refresh"></span></a>
                           </td>
                       </tr>                                
