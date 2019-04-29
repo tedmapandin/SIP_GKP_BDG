@@ -369,7 +369,7 @@
             <?if($ktgdiv != '1'){?>
               <table width="100%" cellspacing="5"width="100%" border="0">
                 <tr>
-                  <td>
+                  <td width="50">
                       <div class="box-header">
                       <a class="btn btn-success btn-flat" data-toggle="modal" data-target="#addProgram"><span class="fa fa-plus-square-o"></span> Program Baru</a>
                       </div>
@@ -380,7 +380,17 @@
                   <td width="150">
                       <? selectYear();?> &nbsp;
                   </td>
-                  <td align="left">
+                  <td width="150">
+                    Status : &nbsp;
+                    <select id="status" name="status">
+                      <option value="1">All</option>
+                      <option value="1">Review</option>
+                      <option value="3">Disetujui</option>
+                      <option value="4">Ditolak</option>
+                      <option value="2">Dilaporkan</option>
+                    </select>
+                  </td>
+                  <td align="left" width="55%">
                     <input type="submit" class="btn btn-primary btn-sm" name="prog"  id="prog" value="FILTER">
                   </td>
                 </tr>
@@ -393,7 +403,6 @@
                   <table cellpadding="5" cellspacing="5"width="100%" border="0">
                     <tr>
                       <td width="250">
-
                           <? selectDiv();?> &nbsp;
                       </td>
                       <td width="180">
@@ -409,7 +418,7 @@
                   </table>
                 </div>
             <? } ?>
-           
+            
             <!-- /.box-header -->
             <?
             if(isset($_POST['saveLap'])) 
