@@ -798,7 +798,7 @@ function displayView()
                                   <?
                                   }
                                ?>
-                              <a class="btn" data-toggle="modal" data-target="#delProgram<? echo $progId;?>"><span class="fa fa-trash"></span></a>
+                              <!-- <a class="btn" data-toggle="modal" data-target="#delProgram<? //echo $progId;?>"><span class="fa fa-trash"></span></a> -->
                               <a class="btn" href="<? refresh();?>"><span class="fa fa-refresh"></span></a>
                           </td>
                       </tr>                                

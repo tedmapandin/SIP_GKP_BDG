@@ -17,6 +17,7 @@ function user($username)
 
 function modalViewTrans($id) 
 {
+  //echo $id;
 	global $conn;
 	?>
 	<div class="modal fade" id="viewLaporan<? echo $id;?>" tabindex="-1" role="dialog">
@@ -41,7 +42,7 @@ function modalViewTrans($id)
 	                                    LEFT JOIN tbl_bidang c ON a.bid_id = c.bid_id
 	                                  WHERE a.trans_id = '$id' 
 	                                  ORDER BY a.bln_id DESC";
-	                    //echo $getdet_trans;
+	                    echo $getdet_trans;
 	                    $execdet_trans = mysqli_query($conn, $getdet_trans);
 	                    $row_trans = mysqli_fetch_array($execdet_trans,MYSQLI_ASSOC);
 
@@ -119,18 +120,18 @@ function modalViewTrans($id)
 	                   <div role="tabpanel" class="tab-pane fade show active" id="vtranskeu<? echo $idDetKeg;?>">
 	                   	  <div class="row">
 	                        <div class="col col-3 no-gutters">Anggaran</div>
-	                        <div class="col">: Rp <? echo split2curr($row_trans['real_anggaran']);?></div>
+	                        <div class="col">: Rp <? echo $row_trans['real_anggaran'];?></div>
 	                      </div>
 	                      <div class="row">
 	                        <div class="col col-3 no-gutters" >Total Pengeluaran</div>
-	                        <div class="col">: Rp <? echo split2curr($row_trans['real_keu']);?></div>
+	                        <div class="col">: Rp <? echo $row_trans['real_keu'];?></div>
 	                      </div>
 	                      <div class="row">
 	                        <div class="col col-3 no-gutters" >Saldo</div>
 	                        <?if($row_trans['saldo'] > 0) { ?>
-	                        <div class="col" style="color: black;">: Rp <? echo split2curr($row_trans['saldo']);?></div>
+	                        <div class="col" style="color: black;">: Rp <? echo $row_trans['saldo'];?></div>
 	                    	<? } else if($row_trans['saldo'] <= 0) { ?>
-	                    	<div class="col" style="color: red;">: Rp <? echo '('.split2curr($row_trans['saldo']).')';?></div>
+	                    	<div class="col" style="color: red;">: Rp <? echo $row_trans['saldo'];?></div>
 	                    	<? } ?>
 	                      </div>
 	                      <br/>

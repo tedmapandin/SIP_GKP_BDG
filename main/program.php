@@ -22,7 +22,10 @@
 
   $user = $_SESSION['username'];
   $usrid = $_SESSION['usr_id'];
-  $get_user   = "SELECT * FROM tbl_user where usr_nama='$user'";
+  $get_user   = "SELECT a.*, b.* 
+                 FROM tbl_user a LEFT JOIN tbl_divisi b ON a.div_id = b.div_id 
+                 WHERE 
+                  a.usr_nama='$user'";
   $login    = mysqli_query($conn,$get_user);
   $row = mysqli_fetch_array($login,MYSQLI_ASSOC);
   
@@ -31,6 +34,7 @@
   $bidang = $row['bid_id'];
   $divi = $row['div_id'];
   $id_usr = $row['usr_id'];
+  $div_name = $row['div_nama'];
 
   
   $filt="";
@@ -148,27 +152,26 @@
           //header("location:http://localhost/SIP_GKP_BDG/main/program.php");
 
           $mail = new PHPMailer\PHPMailer\PHPMailer();
-
-          $mail = new PHPMailer\PHPMailer\PHPMailer();
           $mail->IsSMTP(); // enable SMTP
 
-          $mail->SMTPDebug = 1; // debugging: 1 = errors and messages, 2 = messages only
+          //$mail->SMTPDebug = 1; // debugging: 1 = errors and messages, 2 = messages only
           $mail->SMTPAuth = true; // authentication enabled
           $mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for Gmail
           $mail->Host = "smtp.gmail.com";
           $mail->Port = 465; // or 587
           $mail->IsHTML(true);
-          $mail->Username = "tedmapandin@gmail.com";
-          $mail->Password = "100%brave";
-          $mail->SetFrom("tedmapandin@gmail.com");
+          $mail->Username = "user.sipgkpbddg@gmail.com";
+          $mail->Password = "user.sipgkp@1234";
+          $mail->SetFrom("user.sipgkpbddg@gmail.com");
           $mail->Subject = "Program Baru";
-          $mail->Body = "Program baru telah diinput. Silahkan Cek SIP";
-          $mail->AddAddress("bayukristiadhimuliasetia@gmail.com");
+          $mail->Body = "Program baru telah diinput.<br/> Divisi : ".$div_name." <br/> Nama Program : ". $nama_keg ."<br/><br/><p>Silahkan Cek Program SIP.</p>";
+
+          $mail->AddAddress("mj.sipgkpbdg@gmail.com");
 
           if(!$mail->Send()) {
             echo "Mailer Error: " . $mail->ErrorInfo;
           } else {
-            echo "Message has been sent";
+            echo '<div class="alert alert-success">Program Sukses diupload</div>';
           }
 
           /*if($m->send()) {
@@ -180,7 +183,7 @@
 
       }
 
-      if(count($errorLap) < 1)
+      if(count($errorLap) < 1 && $ktgdiv == 1)
       {
          if(isset($_POST['aprvProg']))
          {

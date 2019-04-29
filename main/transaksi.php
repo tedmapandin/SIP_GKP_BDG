@@ -91,6 +91,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editProg']))
   {
       echo "Error: " . $updTrans . "<br>" . $conn->error;
   }
+
+  $mail = new PHPMailer\PHPMailer\PHPMailer();
+  $mail->IsSMTP(); // enable SMTP
+
+  //$mail->SMTPDebug = 1; // debugging: 1 = errors and messages, 2 = messages only
+  $mail->SMTPAuth = true; // authentication enabled
+  $mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for Gmail
+  $mail->Host = "smtp.gmail.com";
+  $mail->Port = 465; // or 587
+  $mail->IsHTML(true);
+  //pengirim
+  $mail->Username = "user.sipgkpbddg@gmail.com";
+  $mail->Password = "user.sipgkp@1234";
+  $mail->SetFrom("user.sipgkpbddg@gmail.com");
+  //subject dan body
+  $mail->Subject = "Laporan Baru";
+  $mail->Body = "Laporan baru telah diinput.<br/> Divisi : ".$div_name." <br/> Nama Program : ". $nama_keg ."<br/><br/><p>Silahkan Cek Program SIP.</p>";
+
+  $mail->AddAddress("mj.sipgkpbdg@gmail.com");
+
+  if(!$mail->Send()) {
+    echo "Mailer Error: " . $mail->ErrorInfo;
+  } else {
+    echo '<div class="alert alert-success">Laporan Sukses diupload</div>';
+  }
 }
 
 if(isset($_POST['progSearch']))
@@ -100,9 +125,9 @@ if(isset($_POST['progSearch']))
     $filterBid = $_POST['filterBid'];
     if($filterBid != "all")
     {
-      $filter = "WHERE a.bid_id= '$filterBid'";
+      $filter = " AND a.bid_id= '$filterBid'";
     }
-    else
+    else if($filterBid == "all")
     {
       $filter = "";
     }
@@ -113,6 +138,7 @@ if($bidang != '1')
 {
   $fBid = "WHERE bid_id = '$bidang'";
 }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -227,9 +253,9 @@ if($bidang != '1')
                                           LEFT JOIN tbl_user d ON a.usr_id = d.usr_id
                                           LEFT JOIN tbl_detkeg e ON a.trans_id = e.trans_id
                                           LEFT JOIN tbl_detkeu f ON e.detkeg_id = f.detkeg_id
-                                         $filter
+                                        WHERE a.trans_stat = '3' $filter
                                         ORDER BY e.bln_id DESC, a.trans_tgl ASC";
-                                        echo $get_trans;
+                                        //echo $get_trans;
                             $exec_trans = mysqli_query($conn,$get_trans);
                             if(mysqli_num_rows($exec_trans) > 0) 
                             {
@@ -254,6 +280,7 @@ if($bidang != '1')
                                     $thn        = $row_thn['thn_desc'];
                                     $tgl_keg    = new DateTime($row['trans_tgl']);
                                     $tStat      = $row['trans_stat'];
+                                    echo $transId;
                                     
                                     ?>
                                     <tr style="vertical-align: middle;">

@@ -77,7 +77,7 @@ function selectBid($bid)
   }
 
   ?>
-   Bidang : <select class="form-control-sm" id="filterBid" name="filterBid">
+   Bidang : <select class="form-control-sm" id="filterBid" name="filterBid" required>
               <option value="">- Bidang  -</option>
               <?php
               if($bid == '1'){
@@ -97,33 +97,33 @@ function selectBid($bid)
           </select>&nbsp;
   <?
 }
-function split2curr($nilai) 
-{  
-    $split=explode('.',$nilai);
-    $result="$split[0]";
-    $len=strlen("$result");
-    if ($split[1] !="00" and $split[1] !="")    {   
-        $split[1]=".$split[1]"; 
-    }   else    {
-        $split[1]="";
-    };
-    /*
-    $count=1;
-    $stat=0;
-    while ($len >3) {
-        $dist=$count*3+$stat;   
-        $result=substr_replace($result, ',', -$dist,0);                                         
-        $len=$len-3;
-        $stat++;
-        $count++;
-    };
-    return "$tit $result$split[1]";
-    */
-    //if ($split[1] >0) {
-    //  return number_format($nilai,2);
-    //} else    {
-        return number_format($nilai);
-    //};     
+function split2curr($nilai) { 
+  
+  $split=explode('.',$nilai);
+  $result="$split[0]";
+  $len=strlen("$result");
+  if ($split[1] !="00" and $split[1] !="")  { 
+    $split[1]=".$split[1]"; 
+  } else  {
+    $split[1]="";
+  };
+  /*
+  $count=1;
+  $stat=0;
+  while ($len >3) {
+    $dist=$count*3+$stat;   
+    $result=substr_replace($result, ',', -$dist,0);                     
+    $len=$len-3;
+    $stat++;
+    $count++;
+  };
+  return "$tit $result$split[1]";
+  */
+  //if ($split[1] >0) {
+  //  return number_format($nilai,2);
+  //} else  {
+    return number_format($nilai);
+  //};   
 };
 
 function tgl_indo($tanggal){
