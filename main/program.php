@@ -167,6 +167,8 @@
           $mail->Body = "Program baru telah diinput.<br/> Divisi : ".$div_name." <br/> Nama Program : ". $nama_keg ."<br/><br/><p>Silahkan Cek Program SIP.</p>";
 
           $mail->AddAddress("mj.sipgkpbdg@gmail.com");
+          $mail->AddCC("tedmapandin@gmail.com");
+          $mail->AddCC("bayukristiadhimuliasetia@gmail.com");
 
           if(!$mail->Send()) {
             echo "Mailer Error: " . $mail->ErrorInfo;
@@ -189,11 +191,59 @@
          {
             $stat    = '3';
             $qryStat = " ,trans_stat = '$stat'";
+            //send notif
+            $mail = new PHPMailer\PHPMailer\PHPMailer();
+            $mail->IsSMTP(); // enable SMTP
+
+            //$mail->SMTPDebug = 1; // debugging: 1 = errors and messages, 2 = messages only
+            $mail->SMTPAuth = true; // authentication enabled
+            $mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for Gmail
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 465; // or 587
+            $mail->IsHTML(true);
+            $mail->Username = "mj.sipgkpbdg@gmail.com";
+            $mail->Password = "mj@sipgkp1234";
+            $mail->SetFrom("mj.sipgkpbdg@gmail.com");
+            $mail->Subject = "Program baru diterima";
+            $mail->Body = "Program baru telah direview dan diterima.<br/> Divisi : ".$div_name." <br/> Nama Program : ". $nama_keg ."<br/><br/><p>Silahkan melaksanakan programnya. Untuk info detail bisa dicek di SIP GKP Bandung.</p>";
+
+            $mail->AddAddress("user.sipgkpbddg@gmail.com");
+            $mail->AddCC("tedmapandin@gmail.com");
+            $mail->AddCC("bayukristiadhimuliasetia@gmail.com");
+            if(!$mail->Send()) {
+              echo "Mailer Error: " . $mail->ErrorInfo;
+            } else {
+              echo '<div class="alert alert-success">Program Sukses direview</div>';
+            }
          }
          if(isset($_POST['rejProg']))
          {
             $stat    = '4';
             $qryStat = " ,trans_stat = '$stat'";
+            //send notif
+            $mail = new PHPMailer\PHPMailer\PHPMailer();
+            $mail->IsSMTP(); // enable SMTP
+
+            //$mail->SMTPDebug = 1; // debugging: 1 = errors and messages, 2 = messages only
+            $mail->SMTPAuth = true; // authentication enabled
+            $mail->SMTPSecure = 'ssl'; // secure transfer enabled REQUIRED for Gmail
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 465; // or 587
+            $mail->IsHTML(true);
+            $mail->Username = "mj.sipgkpbdg@gmail.com";
+            $mail->Password = "mj@sipgkp1234";
+            $mail->SetFrom("mj.sipgkpbdg@gmail.com");
+            $mail->Subject = "Program baru ditolak";
+            $mail->Body = "Program baru telah direview dan ditolak.<br/> Divisi : ".$div_name." <br/> Nama Program : ". $nama_keg ."<br/><br/><p>Silahkan hubungi majelis bidang. <br/>Untuk info detail bisa dicek di SIP GKP Bandung.</p>";
+
+            $mail->AddAddress("user.sipgkpbddg@gmail.com");
+            $mail->AddCC("tedmapandin@gmail.com");
+            $mail->AddCC("bayukristiadhimuliasetia@gmail.com");
+            if(!$mail->Send()) {
+              echo "Mailer Error: " . $mail->ErrorInfo;
+            } else {
+              echo '<div class="alert alert-success">Program Sukses direview</div>';
+            }
          }
 
           $sql = "UPDATE 

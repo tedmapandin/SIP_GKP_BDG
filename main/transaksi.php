@@ -9,6 +9,9 @@ ini_set('display_startup_errors', TRUE);
 include("../conn/conn.php");
 include("../control/functions.php");
 include("../control/trans_functions.php");
+include("../assets/PHPMailer/src/PHPMailer.php");
+include("../assets/PHPMailer/src/SMTP.php");
+include("../assets/PHPMailer/src/OAuth.php");
 
 $title_pg='Transaksi';
 
@@ -66,12 +69,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editProg']))
   }
   if(!empty($_POST['nom_keu'])){
     $nom_keu = clean($_POST['nom_keu']);
+    $nom_keu = str_replace(',', '', $nom_keu);
   }
   if(!empty($_POST['urai_keu'])){
     $urai_keu = clean($_POST['urai_keu']);
   }
   if(!empty($_POST['real_keu'])){
     $real_keu = clean($_POST['real_keu']);
+    $real_keu = str_replace(',', '', $real_keu);
   }
 
   $qrySubmtLap = "INSERT INTO tbl_realisasi
@@ -107,7 +112,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editProg']))
   $mail->SetFrom("user.sipgkpbddg@gmail.com");
   //subject dan body
   $mail->Subject = "Laporan Baru";
-  $mail->Body = "Laporan baru telah diinput.<br/> Divisi : ".$div_name." <br/> Nama Program : ". $nama_keg ."<br/><br/><p>Silahkan Cek Program SIP.</p>";
+
+  $getDivName = "SELECT * FROM tbl_divisi WHERE div_id = '$lapDiv'";
+  $execDivName = mysqli_query($conn, $getDivName);
+  $row = mysqli_fetch_array($execDivName,MYSQLI_ASSOC);
+  $divName = $row['div_nama'];
+
+  $mail->Body = "Laporan baru telah diinput.<br/> Divisi : ".$divName." <br/> Nama Program : ". $keg_name ."<br/><br/><p>Silahkan Cek Program SIP.</p>";
 
   $mail->AddAddress("mj.sipgkpbdg@gmail.com");
 
@@ -253,7 +264,7 @@ if($bidang != '1')
                                           LEFT JOIN tbl_user d ON a.usr_id = d.usr_id
                                           LEFT JOIN tbl_detkeg e ON a.trans_id = e.trans_id
                                           LEFT JOIN tbl_detkeu f ON e.detkeg_id = f.detkeg_id
-                                        WHERE a.trans_stat = '3' $filter
+                                        WHERE a.trans_stat = '3' OR a.trans_stat = '2' $filter
                                         ORDER BY e.bln_id DESC, a.trans_tgl ASC";
                                         //echo $get_trans;
                             $exec_trans = mysqli_query($conn,$get_trans);
@@ -280,7 +291,7 @@ if($bidang != '1')
                                     $thn        = $row_thn['thn_desc'];
                                     $tgl_keg    = new DateTime($row['trans_tgl']);
                                     $tStat      = $row['trans_stat'];
-                                    echo $transId;
+                                    //echo $transId;
                                     
                                     ?>
                                     <tr style="vertical-align: middle;">
@@ -293,7 +304,7 @@ if($bidang != '1')
                                         <td align="right"><?php echo split2curr($row['detkeu_nom']);?></td>
                                         <td align="right"><?php echo $row['usr_nama']?></td>
                                         <? 
-                                        if($tStat == '1') 
+                                        if($tStat == '3') 
                                         { 
                                             ?>
                                             <td style="text-align:right;">
@@ -303,7 +314,7 @@ if($bidang != '1')
                                             </td>
                                             <? 
                                         } 
-                                        else if($tStat >= '1') 
+                                        else if($tStat != '3') 
                                         { 
                                             ?>
                                             <td style="text-align:right;">

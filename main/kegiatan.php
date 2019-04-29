@@ -138,14 +138,14 @@ if(isset($_POST['progSearch']))
             { 
               ?>
                 <div class="box-body">
-                  <div align="right">Rekap :&nbsp;&nbsp;<button class="btn" id="btnExport" onclick="javascript:fnExcelReport('rekapKegiatan','rekap_kegiatan');"><i class="fa fa-file-excel-o" aria-hidden="true" style='font-size:24px'></i></button></div>
+                  <div align="right">Rekap :&nbsp;&nbsp;<button class="btn" id="btnExport" onclick="javascript:fnExcelReport('rekapKegiatan','rekap_kegiatan');"><i class="fa fa-file-excel-o" aria-hidden="true" style='font-size:24px'></i></button>
+                  </div>
                   <div id="rekapKegiatan">
                   <div align="center"><h2><strong>REKAP LAPORAN KEGIATAN</strong></h2></div>
                   <br/>
                   <table id="laptab" class="table table-sm table-bordered" style="font-size:12px;">
                     <thead>    
                     <tr align="center">
-                        <th width="10">&nbsp;</th>
                         <th width="10">No.</th>
                         <th>Bidang</th>
                         <th>Kegiatan</th>
@@ -155,7 +155,6 @@ if(isset($_POST['progSearch']))
                         <th>Keterangan</th>
                         <th>Pengeluaran</th>
                         <th>Saldo</th>
-                        <th style="text-align:center;">Aksi</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -201,7 +200,6 @@ if(isset($_POST['progSearch']))
                                     
                                     ?>
                                     <tr style="vertical-align: middle;">
-                                        <td><input type="checkbox"></td>
                                         <td><?php echo $i;?>.</td>
                                         <td><?php echo $row['bid_nama'];?></td>
                                         <td><?php echo $row['real_nama'];?></td>
@@ -211,14 +209,14 @@ if(isset($_POST['progSearch']))
                                         <td><?php echo $row['real_ket'];?></td>
                                         <td align="right"><?php echo split2curr($row['real_keu']);?></td>
                                         <td align="right"><?php echo split2curr($row['saldo']);?></td>
-                                        <td style="text-align:right;">
+                                        <!-- <td style="text-align:right;"> -->
                                             <!-- <input type="hidden" name="transid" id="transid" value=""> -->
-                                            <a class="btn" data-toggle="modal" data-target="#viewLaporan<? echo $transId;?>" ><span class="fa fa-eye"></span></a>
-                                            <a class="btn" href="http://localhost/SIP_GKP_BDG/main/kegiatan"><span class="fa fa-refresh"></span></a>
-                                        </td>
+                                            <!-- <a class="btn" data-toggle="modal" data-target="#viewLaporan<? //echo $transId;?>" ><span class="fa fa-eye"></span></a>
+                                            <a class="btn" href="http://localhost/SIP_GKP_BDG/main/kegiatan"><span class="fa fa-refresh"></span></a> -->
+                                        <!-- </td> -->
                                     </tr>
                                     <?
-                                    echo modalViewLap($transId);
+                                    //echo modalViewLap($transId);
                                 }
                             }
                             else

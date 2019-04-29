@@ -42,7 +42,7 @@ function modalViewTrans($id)
 	                                    LEFT JOIN tbl_bidang c ON a.bid_id = c.bid_id
 	                                  WHERE a.trans_id = '$id' 
 	                                  ORDER BY a.bln_id DESC";
-	                    echo $getdet_trans;
+	                    //echo $getdet_trans;
 	                    $execdet_trans = mysqli_query($conn, $getdet_trans);
 	                    $row_trans = mysqli_fetch_array($execdet_trans,MYSQLI_ASSOC);
 
@@ -172,12 +172,26 @@ global $conn;
                 <div class="container-fluid">
                    <?
                       $getdet_trans ="SELECT 
-                                        a.*,
+                                        /*a.*,
                                         b.*,
                                         c.*,
                                         d.*,
                                         e.*,
-                                        f.*
+                                        f.**/
+                                        a.trans_id,
+                                        e.detkeg_nama,
+                                        e.detkeg_jenis,
+                                        e.detkeg_urai,
+                                        e.detkeg_ket,
+                                        e.detkeg_tempat,
+                                        e.detkeg_stat,
+                                        e.detkeg_id,
+                                        e.bln_id,
+                                        e.thn_desc,
+                                        a.bid_id,
+                                        a.div_id,
+                                        b.div_nama,
+                                        f.detkeu_nom
                                     FROM 
                                         tbl_transaksi a 
                                       LEFT JOIN tbl_divisi b ON a.div_id = b.div_id
@@ -195,6 +209,7 @@ global $conn;
                       $idDetKeg     = $row_trans['detkeg_id'];
                       $bulan_det    = $row_trans['bln_id'];
                       $transBidId   = $row_trans['bid_id'];
+                      //echo $transBidId;
                       $transYr      = $row_trans['thn_desc'];
                       $divId 		= $row_trans['div_id'];
 
@@ -233,7 +248,7 @@ global $conn;
                       <div class="row" style="width: 100%;padding-left:15px;">
                         <div class="col col-2">Bidang</div>
                         <div>:
-                              <select class="form-control-sm" id="lapBid" name="lapBid" required="">
+                              <select class="form-control-sm" id="lapBid" name="lapBid">
                                   <option value="">- Bidang  -</option>
                                   <?php
                                   $get_bid = "SELECT * FROM tbl_bidang WHERE bid_id='$transBidId' ORDER BY bid_id";
@@ -327,7 +342,7 @@ global $conn;
                         <div class="row" style="padding-left:15px; width: 100%; padding-bottom: 0.5%;">
                           <div class="col col-3">Anggaran</div>
                           <div>: &nbsp;</div> 
-                          <div> <input type="text" name="nom_keu" id="nom_keu" class="form-control form-control-sm" required value="<? echo $row_trans['detkeu_nom'];?>" style="text-align: right;" readonly></div>
+                          <div> <input type="text" name="nom_keu" id="nom_keu" class="form-control form-control-sm" required value="<? echo split2curr($row_trans['detkeu_nom']);?>" style="text-align: right;" readonly></div>
                         </div>
                         <div class="row" style="padding-left:15px; width: 100%; padding-bottom: 0.5%;">
                           <div class="col col-3">Total Pengeluaran</div>

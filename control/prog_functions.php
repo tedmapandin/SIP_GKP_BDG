@@ -547,18 +547,21 @@ function displayMJ_view()
                         } else {
                            $qryDiv = "";
                         }
+                        //echo $qryDiv;
                         if(!empty($_POST['filterMonth'])){
                           $Month = $_POST['filterMonth'];
                           $qryMonth = " AND e.bln_id = '$Month'";
                         } else {
                            $qryMonth = "";
                         }
+                        //echo $qryMonth;
                         if(!empty($_POST['filterYear'])){
                           $Year = $_POST['filterYear'];
                           $qryYear = " AND e.thn_desc = '$Year'";
                         } else {
                            $qryYear = "";
                         }
+                        //echo $qryYear;
                         $get_trans = "SELECT 
                                         a.trans_id,
                                         a.trans_tgl,
@@ -587,6 +590,7 @@ function displayMJ_view()
                                 $i++;
                                 $progId    = $row['trans_id'];
                                 $transStat = $row['trans_stat'];
+                                //echo $transStat;
                                 //echo $progId;
                                 //query nama bulan
                                 $bulan      = $row['bln_id'];
@@ -623,6 +627,12 @@ function displayMJ_view()
                                                 <a class="btn" data-toggle="modal" data-target="#editProgram<? echo $progId;?>"><span class="badge badge-info">review</span></a>
                                               <? 
                                             } 
+                                            else if ($transStat == "2")
+                                            { 
+                                            ?>
+                                                <a class="btn" data-toggle="modal" data-target="#viewProgram<? echo $progId;?>"><span class="badge badge-warning">dilaporkan</span>
+                                            <?
+                                            }
                                             else if ($transStat == "3")
                                             { 
                                             ?>
@@ -716,12 +726,14 @@ function displayView()
               } else {
                  $qryMonth = "";
               }
+              //echo $qryMonth;
               if(!empty($_POST['filterYear'])){
                 $Year = $_POST['filterYear'];
-                $qryYear = " AND e.bln_id = '$Year'";
+                $qryYear = " AND e.thn_desc = '$Year'";
               } else {
                  $qryYear = "";
               }
+              //echo $qryYear;
               $get_trans = "SELECT 
                               a.trans_id,
                               a.trans_tgl,
@@ -784,6 +796,12 @@ function displayView()
                                     ?>
                                       <a class="btn" data-toggle="modal" data-target="#viewProgram<? echo $progId;?>"><span class="badge badge-info">review</span>
                                     <? 
+                                  }
+                                  else if ($transStat == "2")
+                                  { 
+                                  ?>
+                                      <a class="btn" data-toggle="modal" data-target="#viewProgram<? echo $progId;?>"><span class="badge badge-warning">dilaporkan</span>
+                                  <?
                                   } 
                                   else if ($transStat == "3")
                                   { 
